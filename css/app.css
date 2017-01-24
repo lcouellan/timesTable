@@ -1,0 +1,50 @@
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+.loader {
+  background: rgba(255,255,255,.9);
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.loader span {
+  font-weight: 200;
+  font-size: 2em;
+}
+figure img {
+  max-width: 100%;
+}
+body {
+  background: #eee;
+}
+.list-group-item {
+  margin-bottom: 4px;;
+}
+.list-group-item figure{
+   width: 75px;
+   float: left;
+   border-radius: 2px;
+   margin-right: 8px;
+   overflow: hidden
+}
+.list-group-item-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.list-group-item hr {
+  margin: 4px 0;
+}
+
+figure {
+  box-shadow: 0 0 8px rgba(0,0,0,.5);
+}

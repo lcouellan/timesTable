@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tables de multiplication</title>
+
+        <link rel="stylesheet" href="js/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/app.css" />
+
+        <script src="js/lib/jquery/dist/jquery.min.js"></script>
+        <script src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="js/lib/vue/dist/vue.js"></script>
+        <script src="js/lib/vue-router/dist/vue-router.js"></script>
+        <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    </head>
+    <body>
+    <!-- VUE PRINCIPALE -->
+        <div id="app" class="container">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Tables de multiplication</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><router-link to="/">Accueil</router-link></li>
+                            <li><router-link to="/apprentissage">Apprentissage</router-link></li>
+                            <li><router-link to="/evaluation">Evaluation</router-link></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="container">
+                <router-view></router-view>
+            </div>
+            <hr>
+            <p class="text-muted text-center">Travaux pratique - 2017</p>
+        </div>
+        <script id="home" type="text/x-template">
+            <article>
+                <h1>Page d'accueil</h1>
+                <div class="col-sm-6">
+                    <router-link :to="{ name: 'learning' }"><button class="btn btn-info">Apprentissage</button></router-link>
+                </div>
+                <div class="col-sm-6">
+                    <router-link :to="{ name: 'evaluation' }"><button class="btn btn-success">Evaluation</button></router-link>
+                </div>
+            </article>
+        </script>
+        <script id="learning" type="text/x-template">
+            <article>
+                <h1>Page d'apprentissage</h1>
+                <div class="row">
+                    <h2>Choisis ta table de multiplication</h2>
+                    <table class="table table-inverse">
+                        <tbody>
+                            <tr>
+                                <td v-for="n in 9"><router-link :to="{ name: 'learningExercise', params: { id: n } }"><button class="btn btn-info">{{ n }}</button></router-link></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </article>
+        </script>
+        <script id="learningExercise" type="text/x-template">
+        <h1>Table n° {{ $route.params.id }}</h1>
+        </script>
+        <script id="evaluation" type="text/x-template">
+            <article>
+                <h1>Page d'évaluation</h1>
+                <p>test</p>
+            </article>
+        </script>
+        <script src="js/app.js"></script>
+    </body>
+</html>
