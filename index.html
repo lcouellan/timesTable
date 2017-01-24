@@ -69,7 +69,10 @@
             </article>
         </script>
         <script id="learningExercise" type="text/x-template">
-        <h1>Table n° {{ $route.params.id }}</h1>
+            <div>
+                <h1>Table n° {{ $route.params.id }}</h1>
+                <p>{{ multiplying1 }} * {{ multiplying2 }} = {{ result }}</p>
+            </div>
         </script>
         <script id="evaluation" type="text/x-template">
             <article>
