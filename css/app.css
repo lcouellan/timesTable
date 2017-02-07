@@ -1,50 +1,58 @@
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+/* Main */
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Lato',sans-serif;
+	color: #373737;
+	line-height: 26px;
+	font-size: 36px;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0
+body, p, li{
+	font-family: 'Lato',sans-serif;
+	color: #373737;
+	font-size: 17px;
 }
-.loader {
-  background: rgba(255,255,255,.9);
-  position: fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-.loader span {
-  font-weight: 200;
-  font-size: 2em;
-}
-figure img {
-  max-width: 100%;
-}
-body {
-  background: #eee;
-}
-.list-group-item {
-  margin-bottom: 4px;;
-}
-.list-group-item figure{
-   width: 75px;
-   float: left;
-   border-radius: 2px;
-   margin-right: 8px;
-   overflow: hidden
-}
-.list-group-item-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.list-group-item hr {
-  margin: 4px 0;
+.btn,.btn-large {
+	background-color: #14CC92;
 }
 
-figure {
-  box-shadow: 0 0 8px rgba(0,0,0,.5);
+/* Header */
+
+.header {
+	font-weight: lighter;
+	color: #9600B2;
+}
+
+nav {
+	background-color: #9600B2;
+}
+nav .brand-logo {
+	padding: 0 20px;
+	display: block;
+}
+
+/* Homepage */
+.card .card-action {
+	text-align: center;
+}
+.card .card-action a {
+	color: #9600B2 !important;
+}
+.card .card-content {
+	min-height: 100px;
+	text-align: center;
+}
+.card .card-image img {
+	width: 50%;
+	margin: auto;
+	padding: 10px;
+}
+
+
+/* Footer */
+
+footer.page-footer {
+	padding-top: 0px;
+	background-color: #9600B2;
+}
+footer.page-footer .footer-copyright {
+	background-color: #9600B2;
 }
