@@ -1,0 +1,4 @@
+var home = 
+{ 
+    template: "#home"
+};
