@@ -3,20 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Tables de multiplication</title>
-
-
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="css/app.css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
-	<script src="js/lib/jquery/dist/jquery.min.js"></script>
-	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-	<script src="js/lib/vue/dist/vue.js"></script>
-	<script src="js/lib/vue-router/dist/vue-router.js"></script>
-	<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
 </head>
 <body>
 
@@ -92,32 +84,42 @@
 	</article>
 </script>
 <script id="learning" type="text/x-template">
-	<article>
-		<h1>Page d'apprentissage</h1>
-		<div class="row">
-			<h2>Choisis ta table de multiplication</h2>
-			<table class="table table-inverse">
-				<tbody>
-				<tr>
-					<td v-for="n in 9"><router-link :to="{ name: 'learningExercise', params: { id: n } }"><button class="btn btn-info">{{ n }}</button></router-link></td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-	</article>
+	<section>
+		<article>
+			<h1>Page d'apprentissage</h1>
+			<div class="row">
+				<h2>Choisis ta table de multiplication</h2>
+				<table class="table table-inverse" id="exercise">
+					<tbody>
+					<tr>
+						<td v-for="n in 9"><button v-on:click="compute(n)" class="btn btn-info">{{ n }}</button></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</article>
+		<template v-if="exerciseId != 0">
+			<article>
+				<h2>Table de {{ exerciseId }}:</h2>
+				<h3>{{ exerciseId }} x {{ multiplier }} = ...</h3>
+				<p>Choisi la bonne réponse:</p>
+				<p v-for="choice in choices"><button class="btn btn-info">{{ choice }}</button></p>
+			</article>
+		</template>
+	</section>
+
 </script>
-<script id="learningExercise" type="text/x-template">
-	<div>
-		<h1>Table n° {{ $route.params.id }}</h1>
-		<p>{{ multiplying1 }} * {{ multiplying2 }} = {{ result }}</p>
-	</div>
-</script>
-<script id="evaluation" type="text/x-template">
-	<article>
-		<h1>Page d'évaluation</h1>
-		<p>{{ multiplying1 }} * {{ multiplying2 }} = {{ result }}</p>
-	</article>
-</script>
-<script src="js/app.js"></script>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="js/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+<script src="js/lib/vue-router/dist/vue-router.js"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script src="js/store.js"></script>
+<script src="js/home.js"></script>
+<script src="js/evaluate.js"></script>
+<script src="js/train.js"></script>
+<script src="js/router.js"></script>
 </body>
 </html>
