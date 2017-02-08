@@ -1,10 +1,15 @@
 var store =
 	{
-		exerciseId : 0,
-		multiplier : 0,
-		result : 0,
-		choices : []
-	}
+		table : 0,
+		//operations:
+		/* - multiplier <int>
+		 - result <int>
+		 - choices <array>
+		 - error <int>
+		 - time <long>
+		 */
+		operations : []
+	};
 var storeEvaluation =
 	{
 		multiplier1 : 0,
