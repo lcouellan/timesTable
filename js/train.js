@@ -4,64 +4,76 @@ var learning = {
     return store
   },
   methods: {
+    //-----------------------------------
+    //Game methods call by front listener
+    //-----------------------------------
+    play: function(tableNumber) {
+      this.compute(tableNumber);
+      store.round++;
+    },
+    playRound: function(roundNumber, userChoice) {
+      //we keep playing unless we have already done 10 turn
+      if (roundNumber <= 10){
+        store.operations[roundNumber-1].userChoices.push(userChoice);
+        //wrong answer:
+        if (userChoice != store.operations[roundNumber-1].result) {
+          store.operations[roundNumber-1].error++;
+        } else { //right answer
+          store.round++;
+        }
+      } else { //end of the game
+        this.end();
+      } 
+    },
+    //-----------------------------------
+    //Game methods call by backend
+    //-----------------------------------
     compute: function(tableNumber) {
-      let data = {
-        table : 0,
-        operations : []
-      };
-      
-      //generation of the possible answers
-      data.table = tableNumber;
-      let choices = [];
-      for (c=1; c<=10; c++) {
-        choices[c-1] = tableNumber * c;
-      }
+      store.table = tableNumber;
 
-      //generation of the 10 operations
+      //we generate and store each operations
       for (m=1; m<=10; m++) {
-        let operations = {
-          multiplier : 0,
-          result : 0,
-          choices : [],
+
+        //generation of the possible answers
+        //needed to avoid compilation error of vueJs
+        let choices = [];
+        for (c=1; c<=10; c++) {
+          choices[c-1] = tableNumber * c;
+        }
+
+        // operations[m-1] = operation;
+        store.operations[m-1] = {
+          multiplier : m,
+          result : tableNumber * m,
+          choices : this.mix(choices),
+          userChoices : [],
           error : 0,
           time : 0
         };
-
-        //we mix the possible answers
-        for (i=0; i<=choices.length; i++) {
-          let random = Math.floor((Math.random() * (data.operations.length-1)));
-          let random2 = Math.floor((Math.random() * (data.operations.length-1)));
-
-          let tmp = choices[random];
-          choices[random] = choices[random2];
-          choices[random2] = tmp;
-        }
-
-        //we store the value for each operations
-        operations.multiplier = m;
-        operations.result = tableNumber * m;
-        data.operations[m-1] = operations;
-        operations.choices = choices;
       }
 
-      //we mix the 10 operations:
-      for (i=0; i<=Math.pow(data.operations.length,2); i++) {
-        let random = Math.floor((Math.random() * (data.operations.length-1)));
-        let random2 = Math.floor((Math.random() * (data.operations.length-1)));
+      store.operations = this.mix(store.operations);
 
-        let tmp = data.operations[random];
-        data.operations[random] = data.operations[random2];
-        data.operations[random2] = tmp;
+      },
+    // end: function() {
+
+    // },
+    //-----------------------------------
+    //Generic methods (tools)
+    //-----------------------------------
+    mix: function(array) {
+      for (i=0; i<=array.length*array.length; i++) {
+        let random = Math.floor((Math.random() * (array.length)));
+        let random2 = Math.floor((Math.random() * (array.length)));
+        let tmp = array[random];
+        array[random] = array[random2];
+        array[random2] = tmp;
       }
-      
-      //Then we store the computation
-      store.table = data;
-    }
-  },
-  play: function() {
+      return array;
+    },
+    // timer: function(e) {
 
+    // }
   },
-  timer: function() {
-
-  }
+  
 };
