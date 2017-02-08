@@ -98,12 +98,12 @@
 				</table>
 			</div>
 		</article>
-		<template v-if="exerciseId != 0">
+		<template v-if="table != 0">
 			<article>
-				<h2>Table de {{ exerciseId }}:</h2>
-				<h3>{{ exerciseId }} x {{ multiplier }} = ...</h3>
+				<h2>Table de {{ table.table }}:</h2>
+				<h3>{{ table.table }} x {{ table.operations[2].multiplier }} = ...</h3>
 				<p>Choisi la bonne réponse:</p>
-				<p v-for="choice in choices"><button class="btn btn-info">{{ choice }}</button></p>
+				<p v-for="choice in table.operations[2].choices"><button class="btn btn-info">{{ choice }}</button></p>
 			</article>
 		</template>
 	</section>
