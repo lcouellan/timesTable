@@ -107,7 +107,17 @@
 			</article>
 		</template>
 	</section>
-
+</script>
+<script id="evaluation" type="text/x-template">
+	<section>
+		<article>
+			<h1>Page d'évaluation</h1>
+			<h3>{{ exerciseId }} x {{ multiplier }} = ...</h3>
+			<p>Choisi la bonne réponse:</p>
+			<p v-for="choice in choices"><button class="btn btn-info">{{ choice }}</button></p>
+		</article>
+		</template>
+	</section>
 </script>
 
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
