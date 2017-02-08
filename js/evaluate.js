@@ -5,43 +5,70 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
-			let tableNumber = Math.floor((Math.random() * 10) + 1);
-			this.compute(tableNumber);
+			// Create new multiplication
+			storeEvaluation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+			storeEvaluation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+			storeEvaluation.result = storeEvaluation.multiplier1 * storeEvaluation.multiplier2;
+			storeEvaluation.choices = this.generateChoices();
 		},
 		methods: {
-			compute: function(tableNumber){
+			generateChoices: function(){
 				//compute and store operations value
-				let multiplier = Math.floor((Math.random() * 10) + 1);
-				let result = tableNumber * multiplier;
-				storeEvaluation.exerciseId = tableNumber;
-				storeEvaluation.multiplier = multiplier;
-				storeEvaluation.result = result;
+				let choices = [];
 
-				//generate user bad choices
-				//random +-5 of result
-				let choice1;
-				do {
-					choice1 = Math.floor((Math.random() * (result+5 - result-5 + 1)) + result-5);
-				} while(choice1 == result);
-				//same table but random multiplier
-				let choice2;
-				do {
-					choice2 = tableNumber * Math.floor((Math.random() * 10) + 1);
-				} while(choice2 == result && choice2 == choice1);
+				// fill choices with bad answers
+				for (let i = 0; i < 3; i++) {
+					let choice;
+					do {
+						choice = this.generateBadChoice();
+					} while (choice == storeEvaluation.result || choices.indexOf(choice) >= 0)
+					choices.push(choice);
+				}
 
-				//concatenate tableNumber and multiplier
-				let choice3 = tableNumber*10 + multiplier;
+				// add the result to the choices
+				choices.push(storeEvaluation.result);
 
-				//storeEvaluation and mix user choices
-				let choices = [result, choice1, choice2, choice3];
-				for (i=0; i<=20; i++) {
+				// Mix the answers
+				choices = this.mixChoices(choices);
+				return choices;
+			},
+			generateBadChoice: function () {
+
+				// Create a random number deciding which bad result compute
+				let random = Math.floor((Math.random() * 3) + 1);
+
+				let badChoice = 0;
+				switch(random) {
+					case 1 :
+						do {
+
+							// Bad choice 1 : Return a number between -5 and +5 of the result
+							badChoice = Math.floor((Math.random() * (storeEvaluation.result+5 - storeEvaluation.result-5 + 1)) + storeEvaluation.result-5);
+						} while(badChoice == storeEvaluation.result);
+						break;
+					case 2 :
+						do {
+
+							// Bad choice 2 : Return a number in the the same multiplication table of the result
+							badChoice = storeEvaluation.multiplier1 * Math.floor((Math.random() * 10) + 1);
+						} while(badChoice == storeEvaluation.result);
+						break;
+					case 3 :
+
+						// Bad choice 3 : Concatenate the 2 multipliers
+						badChoice = storeEvaluation.multiplier1 * 10 + storeEvaluation.multiplier2;
+				}
+				return badChoice;
+			},
+			mixChoices: function (choices) {
+				for (let i = 0; i <= 20; i++) {
 					let random = Math.floor((Math.random() * 4));
 					let random2 = Math.floor((Math.random() * 4));
 					let tmp = choices[random];
 					choices[random] = choices[random2];
 					choices[random2] = tmp;
 				}
-				storeEvaluation.choices = choices;
+				return choices;
 			}
 		}
 	};

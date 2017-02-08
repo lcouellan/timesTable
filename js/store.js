@@ -7,8 +7,8 @@ var store =
 	}
 var storeEvaluation =
 	{
-		exerciseId : 0,
-		multiplier : 0,
+		multiplier1 : 0,
+		multiplier2 : 0,
 		result : 0,
 		choices : []
 	}
