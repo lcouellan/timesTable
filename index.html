@@ -112,9 +112,41 @@
 	<section>
 		<article>
 			<h1>Page d'évaluation</h1>
-			<h3>{{ multiplier1 }} x {{ multiplier2 }} = ...</h3>
-			<p>Choisi la bonne réponse:</p>
-			<p v-for="choice in choices"><button class="btn btn-info">{{ choice }}</button></p>
+			<div v-if="currentOperation.multiplier1">
+				<h3>{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} = ...</h3>
+				<p>Choisi la bonne réponse:</p>
+				<p v-for="choice in currentOperation.choices">
+					<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
+					<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
+				</p>
+			</div>
+			<div v-else>
+				<table class="bordered highlight">
+					<thead>
+					<tr>
+						<th data-field="operation">Opération</th>
+						<th data-field="result">Résultat</th>
+						<th data-field="correct"></th>
+						<th deta-field="answers">Réponses de l'utilisateur</th>
+						<th deta-field="errors">Nombre d'erreurs</th>
+						<th data-field="timer">Temps</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="operation in operations">
+						<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
+						<td>{{ operation.result }}</td>
+						<td>
+							<span v-if="operation.errors == 0">Correct</span>
+							<span v-else>Incorrect</span>
+						</td>
+						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
+						<td>{{ operation.errors }}</td>
+						<td>{{ operation.timer }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 		</article>
 		</template>
 	</section>

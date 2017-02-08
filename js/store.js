@@ -12,8 +12,7 @@ var store =
 	};
 var storeEvaluation =
 	{
-		multiplier1 : 0,
-		multiplier2 : 0,
-		result : 0,
-		choices : []
+		index : 0,
+		operations: [],
+		currentOperation : 0
 	}
