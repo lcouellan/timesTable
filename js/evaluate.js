@@ -5,6 +5,7 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
+			
 			// Create 10 multiplications for Evaluation Mode
 			// sessionStorage.clear();
 			if(!("operations" in sessionStorage)) {
