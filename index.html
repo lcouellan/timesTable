@@ -92,18 +92,25 @@
 				<table class="table table-inverse" id="exercise">
 					<tbody>
 					<tr>
-						<td v-for="n in 9"><button v-on:click="compute(n)" class="btn btn-info">{{ n }}</button></td>
+						<td v-for="n in 9"><button v-on:click="play(n)" class="btn btn-info">{{ n }}</button>
+						</td>
 					</tr>
 					</tbody>
 				</table>
 			</div>
 		</article>
-		<template v-if="table != 0">
+	
+		<template v-if="round != 0">
 			<article>
-				<h2>Table de {{ table.table }}:</h2>
-				<h3>{{ table.table }} x {{ table.operations[2].multiplier }} = ...</h3>
+			<p>Round: {{round}}/10</p>
+				<h2>Table de {{ table }}:</h2>
+				<h3>{{ table }} x {{ operations[round-1].multiplier }} = ...</h3>
 				<p>Choisi la bonne réponse:</p>
-				<p v-for="choice in table.operations[2].choices"><button class="btn btn-info">{{ choice }}</button></p>
+				<span v-for="choice in operations[round-1].choices">
+					<!-- isn't updated for no understable reason... -->
+					<button v-if="operations[round-1].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
+					<button v-else class="btn" v-on:click="playRound(round, choice)">{{ choice }}</button>
+				</span>
 			</article>
 		</template>
 	</section>
