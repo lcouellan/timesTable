@@ -11,3 +11,10 @@ var store =
   */
   operations : []
 };
+
+var storeEvaluation =
+	{
+		index : 0,
+		operations: [],
+		currentOperation : 0
+	}
