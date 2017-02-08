@@ -112,7 +112,7 @@
 	<section>
 		<article>
 			<h1>Page d'évaluation</h1>
-			<div v-if="currentOperation.multiplier1">
+			<div v-if="index < operations.length">
 				<h3>{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} = ...</h3>
 				<p>Choisi la bonne réponse:</p>
 				<p v-for="choice in currentOperation.choices">
@@ -127,7 +127,7 @@
 						<th data-field="operation">Opération</th>
 						<th data-field="result">Résultat</th>
 						<th data-field="correct"></th>
-						<th deta-field="answers">Réponses de l'utilisateur</th>
+						<th deta-field="answers">Réponses données</th>
 						<th deta-field="errors">Nombre d'erreurs</th>
 						<th data-field="timer">Temps</th>
 					</tr>
@@ -142,7 +142,7 @@
 						</td>
 						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
 						<td>{{ operation.errors }}</td>
-						<td>{{ operation.timer }}</td>
+						<td>{{ operation.time }}</td>
 					</tr>
 					</tbody>
 				</table>

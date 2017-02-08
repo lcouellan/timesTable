@@ -5,28 +5,44 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
+			// Create 10 multiplications for Evaluation Mode
+			// sessionStorage.clear();
+			if(!("operations" in sessionStorage)) {
+				for (let i = 0; i < 10; i++) {
+					let operation = {
+						multiplier1 : 0,
+						multiplier2 : 0,
+						result : 0,
+						choices : [],
+						errors : 0,
+						userChoices : [],
+						time : 0
+					};
 
-			// Create new multiplication
-			for (let i = 0; i < 10; i++) {
-				let operation = {
-					multiplier1 : 0,
-					multiplier2 : 0,
-					result : 0,
-					choices : [],
-					errors : 0,
-					userChoices : [],
-					time : 0
-				};
-				operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
-				operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
-				operation.result = operation.multiplier1 * operation.multiplier2;
-				operation.choices = this.generateChoices(operation);
-				storeEvaluation.operations.push(operation);
+					// Save operation
+					operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+					operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+					operation.result = operation.multiplier1 * operation.multiplier2;
+					operation.choices = this.generateChoices(operation);
+					storeEvaluation.operations.push(operation);
+				}
+
+				// Save operations in local storage
+				sessionStorage.setItem("operations",JSON.stringify(storeEvaluation.operations));
+				sessionStorage.setItem("index",storeEvaluation.index);
+			}else {
+
+				// Get operations from local storage
+				storeEvaluation.operations = JSON.parse(sessionStorage.getItem("operations"));
+				storeEvaluation.index = sessionStorage.getItem("index");
 			}
+
+			// Get the current operation
 			storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
 		},
 		methods: {
 			generateChoices: function(operation){
+
 				//compute and store operations value
 				let choices = [];
 
@@ -87,6 +103,8 @@ var evaluation =
 				}
 				return badChoice;
 			},
+
+			// Mix answers for an operation
 			mixChoices: function (choices) {
 				for (let i = 0; i <= 20; i++) {
 					let random = Math.floor((Math.random() * 4));
@@ -97,20 +115,34 @@ var evaluation =
 				}
 				return choices;
 			},
+
+			// Check result when user click
 			checkResult : function (choice) {
-				storeEvaluation.operations[storeEvaluation.index].userChoices.push(choice);
-				if(choice != storeEvaluation.operations[storeEvaluation.index].result) {
-					storeEvaluation.operations[storeEvaluation.index].errors++;
+				storeEvaluation.currentOperation.userChoices.push(choice);
+
+				// If bad choice
+				if(choice != storeEvaluation.currentOperation.result) {
+					storeEvaluation.currentOperation.errors++;
 				} else {
 					this.nextOperation();
 				}
 			},
+
+			// If response is correct go to the next operation
 			nextOperation: function () {
+
+				// Check there is more operations
 				if (storeEvaluation.index != storeEvaluation.operations.length - 1) {
+					storeEvaluation.operations[storeEvaluation.index] = storeEvaluation.currentOperation;
 					storeEvaluation.currentOperation = storeEvaluation.operations[++storeEvaluation.index];
 				} else {
+					storeEvaluation.index ++;
 					storeEvaluation.currentOperation = 0;
 				}
+
+				// Save the operations
+				sessionStorage.setItem("operations",JSON.stringify(storeEvaluation.operations));
+				sessionStorage.setItem("index",storeEvaluation.index);
 			}
 		}
 	};
