@@ -40,23 +40,36 @@ var evaluation =
 				let badChoice = 0;
 				switch(random) {
 					case 1 :
-						do {
 
-							// Bad choice 1 : Return a number between -5 and +5 of the result
-							badChoice = Math.floor((Math.random() * (storeEvaluation.result+5 - storeEvaluation.result-5 + 1)) + storeEvaluation.result-5);
-						} while(badChoice == storeEvaluation.result);
+						// Bad choice 1 : Return a number between -5 and +5 of the result
+						badChoice = Math.floor((Math.random() * (storeEvaluation.result+5 - storeEvaluation.result-5 + 1)) + storeEvaluation.result-5);
 						break;
 					case 2 :
-						do {
 
-							// Bad choice 2 : Return a number in the the same multiplication table of the result
-							badChoice = storeEvaluation.multiplier1 * Math.floor((Math.random() * 10) + 1);
-						} while(badChoice == storeEvaluation.result);
+						// Bad choice 2 : Return a number in the the same multiplication table of the result
+						badChoice = storeEvaluation.multiplier1 * Math.floor((Math.random() * 10) + 1);
 						break;
 					case 3 :
 
 						// Bad choice 3 : Concatenate the 2 multipliers
 						badChoice = storeEvaluation.multiplier1 * 10 + storeEvaluation.multiplier2;
+						break;
+					case 4 :
+
+						// Bad choice 4 : add the 2 multipliers
+						badChoice = storeEvaluation.multiplier1 + storeEvaluation.multiplier2;
+						break;
+					case 5 :
+
+						// Bad choice 5 : Return the number above in the multiplication table
+						badChoice = (storeEvaluation.multiplier1 - 1) * storeEvaluation.multiplier2;
+						break;
+					case 6 :
+
+						// Bad choice 6 : Return the number below in the multiplication table
+						badChoice = (storeEvaluation.multiplier1 + 1) * storeEvaluation.multiplier2;
+						break;
+
 				}
 				return badChoice;
 			},
