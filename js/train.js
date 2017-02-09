@@ -9,7 +9,8 @@ var learning = {
     //-----------------------------------
     //init function lauching the game
     play: function(tableNumber) {
-      console.log(getLocalStorage());
+      //initGame
+      store.round = 0;
       //generate all the operation
       this.compute(tableNumber);
       //set the first round (0+1) and so start it.

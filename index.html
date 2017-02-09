@@ -92,7 +92,9 @@
 				<table class="table table-inverse" id="exercise">
 					<tbody>
 					<tr>
-						<td v-for="n in 9"><button v-on:click="play(n)" class="btn btn-info">{{ n }}</button>
+						<td v-for="n in 9">
+							<button v-if="table == n" class="btn btn-info red">{{ n }}</button>
+							<button v-else v-on:click="play(n)" class="btn btn-info">{{ n }}</button>
 						</td>
 					</tr>
 					</tbody>
