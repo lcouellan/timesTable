@@ -9,9 +9,7 @@ var learning = {
     //-----------------------------------
     //init function lauching the game
     play: function(tableNumber) {
-      console.log(LOCAL_STORAGE_NAME);
-      let storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
-      console.log(storage);
+      console.log(getLocalStorage());
       //generate all the operation
       this.compute(tableNumber);
       //set the first round (0+1) and so start it.
@@ -31,9 +29,11 @@ var learning = {
           store.userChoices = [];
           store.round++;
         }
-      } else { //end of the game
-        this.end();
-      } 
+      }
+    },
+    
+    end: function() {
+      updateLocalStorage(LOCAL_TRAIN_COL, store);
     },
     //-----------------------------------
     //Game methods call by backend
@@ -64,22 +64,6 @@ var learning = {
       //we mix the operation
       store.operations = this.mix(store.operations);
     },
-    //when called this function store the result from the store to local storage
-    end: function() {
-      if(!("timesTableGame" in localStorage)) {
-        //we create the localStorage
-        this.initLocalStorage();
-      } 
-      //we retrieve the data from the local storage
-      let storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
-      //we append the data of the game
-      storage[LOCAL_TRAIN_COL].push(store);
-      console.log(storage);
-      //we prepare the data to be send back
-      let toStore = JSON.stringify(storage);
-      //we push the updated data;
-      localStorage.setItem(LOCAL_STORAGE_NAME, toStore);
-    },
     //-----------------------------------
     //Generic methods (tools)
     //-----------------------------------
@@ -97,13 +81,6 @@ var learning = {
     // timer: function(e) {
 
     // },
-    initLocalStorage: function() {
-      let toStore = JSON.stringify({
-        [LOCAL_EVALUATE_COL] : [],
-        [LOCAL_TRAIN_COL] : []
-      });
-      localStorage.setItem(LOCAL_STORAGE_NAME, toStore);
-    }
   },
   
 };
