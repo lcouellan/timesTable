@@ -1,3 +1,16 @@
+/*
+Colors
+
+#9575cd deep-purple lighten-2
+#1de9b6 teal accent-3
+
+
+#d1c4e9 deep-purple lighten-4 ( for card content )
+#ee6e73 police button color
+
+
+ */
+
 /* Main */
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Lato',sans-serif;
@@ -10,19 +23,37 @@ body, p, li{
 	color: #373737;
 	font-size: 17px;
 }
-.btn,.btn-large {
-	background-color: #14CC92;
+.btn {
+	background-color: white;
+	color : rgba(238,110,115,0.7);
+}
+.btn:hover, .btn:focus{
+	background-color: white;
+	color: #ee6e73;
+}
+.tabs .tab a:hover, .tabs .tab a.active {
+	cursor: pointer;
+}
+
+#app {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+#main {
+	flex: 1 0 auto;
 }
 
 /* Header */
 
 .header {
 	font-weight: lighter;
-	color: #9600B2;
+	color: #9575cd ;
 }
 
 nav {
-	background-color: #9600B2;
+	background-color: #9575cd;
 }
 nav .brand-logo {
 	padding: 0 20px;
@@ -34,11 +65,14 @@ nav .brand-logo {
 	text-align: center;
 }
 .card .card-action a {
-	color: #9600B2 !important;
+	color: #9575cd !important;
 }
 .card .card-content {
 	min-height: 100px;
 	text-align: center;
+}
+.card .card-image {
+	min-height: 280px;
 }
 .card .card-image img {
 	width: 50%;
@@ -46,13 +80,48 @@ nav .brand-logo {
 	padding: 10px;
 }
 
+/* Apprentissage */
+
+#content-learning .card .card-content p {
+	color: white;
+}
+
+/* Opérations */
+
+.content-operation .text-tour {
+	font-style: italic;
+	color: #ee6e73;
+}
+.content-operation .answers .btn{
+	margin: 0 10px 10px 0;
+}
+.content-operation .answers .red{
+	color: white;
+}
+
+/* Tableau des scores */
+.table-score {
+	margin-bottom: 40px;
+}
+.table-score td, .table-score th {
+	text-align: center;
+}
+.table-score th {
+	color: #ee6e73;
+}
+.table-score .mistakes {
+	color: #f44336;
+}
+.table-score .no-mistakes {
+	color: #4caf50;
+}
 
 /* Footer */
 
 footer.page-footer {
 	padding-top: 0px;
-	background-color: #9600B2;
+	background-color: #9575cd;
 }
 footer.page-footer .footer-copyright {
-	background-color: #9600B2;
+	background-color: #9575cd;
 }

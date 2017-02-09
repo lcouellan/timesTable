@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
 	<title>Tables de multiplication</title>
@@ -38,7 +38,7 @@
 			</ul>
 		</div>
 	</nav>
-	<div class="container">
+	<div id="main">
 		<router-view></router-view>
 	</div>
 	<footer class="page-footer">
@@ -52,7 +52,7 @@
 </div>
 <script id="home" type="text/x-template">
 	<article>
-		<h1 class="header">Page d'accueil</h1>
+		<h1 class="header center">Choisis ton mode de jeu</h1>
 		<template v-if="message">
 			<p>{{ message }}</p>
 		</template>
@@ -63,7 +63,7 @@
 						<img src="images/book.png">
 					</div>
 					<div class="card-content">
-						<p>Test tes connaissances avec le mode évaluation !</p>
+						<p>Révise tes tables de multiplication avec le mode apprentissage !</p>
 					</div>
 					<div class="card-action">
 						<router-link :to="{ name: 'learning' }">Commencez l'entraînement</router-link>
@@ -73,10 +73,10 @@
 			<div class="col s6 m6">
 				<div class="card">
 					<div class="card-image">
-						<img src="images/star.png">
+						<img src="images/owl.png">
 					</div>
 					<div class="card-content">
-						<p>Révise tes tables de multiplication avec le mode apprentissage !</p>
+						<p>Test tes connaissances avec le mode évaluation !</p>
 					</div>
 					<div class="card-action">
 						<router-link :to="{ name: 'evaluation' }">Commencez l'évaluation</router-link>
@@ -99,48 +99,51 @@
 </script>
 <script id="learning" type="text/x-template">
 	<section>
-		<article>
-			<h1>Page d'apprentissage</h1>
+		<article id="content-learning">
+			<h1 class="header center">Mode apprentissage</h1>
 			<div class="row">
-				<h2>Choisis ta table de multiplication</h2>
-				<table class="table table-inverse" id="exercise">
-					<tbody>
-					<tr>
-						<td v-for="n in 9">
-							<button v-if="table == n" class="btn btn-info red">{{ n }}</button>
-							<button v-else v-on:click="play(n)" class="btn btn-info">{{ n }}</button>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+					<div class="card-content" deep-purple lighten-4>
+						<p>Grâce au mode apprentissage, tu peux choisir quelle table de multiplication réviser !</p>
+						<p>Choisis ta table de multiplication</p>
+					</div>
+					<div class="card-tabs">
+						<ul class="tabs tabs-fixed-width">
+							<li v-for="n in 9" class="tab">
+								<button v-if="table == n" class="btn red">{{ n }}</button>
+                                                        	<button v-else v-on:click="play(n)" class="btn">{{ n }}</button>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</article>
-	
+
 		<template v-if="table != 0 && round < 11">
-			<article>
-			<p>Round: {{round}}/10</p>
-				<h2>Table de {{ table }}:</h2>
-				<h3>{{ table }} x {{ operations[round-1].multiplier }} = ...</h3>
+			<article class="content-operation">
+				<h2 class="header center">Table de {{ table }}</h2>
+				<p class="text-tour">Opération {{round}} sur 10</p>
+				<h3 class="center">{{ table }} x {{ operations[round-1].multiplier }} =</h3>
 				<p>Choisi la bonne réponse:</p>
+				<div class="answers">
 				<span v-for="choice in operations[round-1].choices">
 					<button v-if="userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
 					<button v-else class="btn" v-on:click="playRound(round, choice)">{{ choice }}</button>
 				</span>
+				</div>
 			</article>
 		</template>
 
 		<template v-if="round == 11">
 			{{ end() }}
 			<article>
-				<h2>Résultat de l'entrainement sur la table de {{ table }}:</h2>
-				<table class="bordered highlight">
+				<h1 class="header center">Résultat de l'entrainement sur la table de {{ table }}:</h1>
+				<table class="bordered highlight table-score">
 					<thead>
 					<tr>
 						<th data-field="operation">Opération</th>
 						<th data-field="result">Résultat</th>
-						<th data-field="correct"></th>
-						<th deta-field="answers">Réponses données</th>
 						<th deta-field="errors">Nombre d'erreurs</th>
+						<th deta-field="answers">Réponses données</th>
 						<th data-field="timer">Temps</th>
 					</tr>
 					</thead>
@@ -149,41 +152,43 @@
 						<td>{{ table }} x {{ operation.multiplier }}</td>
 						<td>{{ operation.result }}</td>
 						<td>
-							<span v-if="operation.error == 0">Correct</span>
-							<span v-else>Incorrect</span>
+							<span v-if="operation.error == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ operation.error }}</span>
 						</td>
 						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
-						<td>{{ operation.error }}</td>
 						<td>{{ operation.time }}</td>
 					</tr>
 					</tbody>
 				</table>
-				
+
 			</article>
 		</template>
 	</section>
 </script>
 <script id="evaluation" type="text/x-template">
-	<section>
-		<article>
-			<h1>Page d'évaluation</h1>
 			<div v-if="index < operations.length">
-				<h3>{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} = ...</h3>
+				<h1 class="header center">Page d'évaluation</h1>
+				<article class="content-operation">
+				<p class="text-tour">Opération {{ index+1 }} sur 10</p>
+				<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
 				<p>Choisi la bonne réponse:</p>
-				<p v-for="choice in currentOperation.choices">
+				<div class="answers">
+				<span v-for="choice in currentOperation.choices">
 					<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
 					<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
-				</p>
+				</span>
+				</div>
+				</article>
 			</div>
 			<div v-else>
-				<table class="bordered highlight">
+				<h1 class="header center">Résultats de l'évaluation</h1>
+				<table class="bordered highlight table-score">
 					<thead>
 					<tr>
 						<th data-field="operation">Opération</th>
 						<th data-field="result">Résultat</th>
-						<th data-field="correct"></th>
+						<th data-field="errors">Nombre d'erreurs</th>
 						<th deta-field="answers">Réponses données</th>
-						<th deta-field="errors">Nombre d'erreurs</th>
 						<th data-field="timer">Temps</th>
 					</tr>
 					</thead>
@@ -192,11 +197,10 @@
 						<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
 						<td>{{ operation.result }}</td>
 						<td>
-							<span v-if="operation.errors == 0">Correct</span>
-							<span v-else>Incorrect</span>
+							<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ operation.errors }}</span>
 						</td>
 						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
-						<td>{{ operation.errors }}</td>
 						<td>{{ operation.time }}</td>
 					</tr>
 					</tbody>
