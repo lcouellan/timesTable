@@ -1,3 +1,7 @@
+const LOCAL_STORAGE_NAME = "timesTableGame";
+const LOCAL_EVALUATE_COL = "evaluate";
+const LOCAL_TRAIN_COL = "train";
+
 var store = 
 {
   table : 0,
