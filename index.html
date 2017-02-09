@@ -108,7 +108,7 @@
 				<p>Choisi la bonne réponse:</p>
 				<span v-for="choice in operations[round-1].choices">
 					<!-- isn't updated for no understable reason... -->
-					<button v-if="operations[round-1].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
+					<button v-if="userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
 					<button v-else class="btn" v-on:click="playRound(round, choice)">{{ choice }}</button>
 				</span>
 			</article>

@@ -14,11 +14,13 @@ var learning = {
     playRound: function(roundNumber, userChoice) {
       //we keep playing unless we have already done 10 turn
       if (roundNumber <= 10){
-        store.operations[roundNumber-1].userChoices.push(userChoice);
+        store.userChoices.push(userChoice);
         //wrong answer:
         if (userChoice != store.operations[roundNumber-1].result) {
           store.operations[roundNumber-1].error++;
         } else { //right answer
+          store.operations[roundNumber-1].userChoices = store.userChoices;
+          store.userChoices = [];
           store.round++;
         }
       } else { //end of the game
