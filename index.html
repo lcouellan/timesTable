@@ -53,6 +53,9 @@
 <script id="home" type="text/x-template">
 	<article>
 		<h1 class="header">Page d'accueil</h1>
+		<template v-if="message">
+			<p>{{ message }}</p>
+		</template>
 		<div class="row">
 			<div class="col s6 m6">
 				<div class="card">
@@ -81,7 +84,18 @@
 				</div>
 			</div>
 		</div>
+
+		<template v-if="storageExist">
+			<h2>Sauvegarder ma partie:</h2>
+			<p>Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: <a :href="saveUri" download="timesTableSavegame.save">télécharger ma sauvegarde</a></p>
+		</template>
+		<template v-else>
+			<h2>Restaurer ma partie:</h2>
+			<p>Nous n'avons pas de partie enregistré sur cet ordinateur! Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
+			<input type="file" id="input" @change="importSave($event)">
+		</template>
 	</article>
+	
 </script>
 <script id="learning" type="text/x-template">
 	<section>

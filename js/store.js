@@ -16,3 +16,9 @@ var storeEvaluation =
 		operations: [],
 		currentOperation : 0
 	}
+
+var storage = {
+  storageExist : false,
+  saveUri : null,
+  message : null
+}
