@@ -9,7 +9,8 @@ var store =
      - error <int>
      - time <long>
   */
-  operations : []
+  operations : [],
+  userChoices : []
 };
 
 var storeEvaluation =

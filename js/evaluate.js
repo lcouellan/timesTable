@@ -7,35 +7,23 @@ var evaluation =
 		created: function(){
 			
 			// Create 10 multiplications for Evaluation Mode
-			// sessionStorage.clear();
-			if(!("operations" in sessionStorage)) {
-				for (let i = 0; i < 10; i++) {
-					let operation = {
-						multiplier1 : 0,
-						multiplier2 : 0,
-						result : 0,
-						choices : [],
-						errors : 0,
-						userChoices : [],
-						time : 0
-					};
+			for (let i = 0; i < 10; i++) {
+				let operation = {
+					multiplier1 : 0,
+					multiplier2 : 0,
+					result : 0,
+					choices : [],
+					errors : 0,
+					userChoices : [],
+					time : 0
+				};
 
-					// Save operation
-					operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
-					operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
-					operation.result = operation.multiplier1 * operation.multiplier2;
-					operation.choices = this.generateChoices(operation);
-					storeEvaluation.operations.push(operation);
-				}
-
-				// Save operations in local storage
-				sessionStorage.setItem("operations",JSON.stringify(storeEvaluation.operations));
-				sessionStorage.setItem("index",storeEvaluation.index);
-			}else {
-
-				// Get operations from local storage
-				storeEvaluation.operations = JSON.parse(sessionStorage.getItem("operations"));
-				storeEvaluation.index = sessionStorage.getItem("index");
+				// Save operation
+				operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+				operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+				operation.result = operation.multiplier1 * operation.multiplier2;
+				operation.choices = this.generateChoices(operation);
+				storeEvaluation.operations.push(operation);
 			}
 
 			// Get the current operation
@@ -139,11 +127,9 @@ var evaluation =
 				} else {
 					storeEvaluation.index ++;
 					storeEvaluation.currentOperation = 0;
+                    //end of the game, we update the local storage
+                    updateLocalStorage(LOCAL_EVALUATE_COL, storeEvaluation);
 				}
-
-				// Save the operations
-				sessionStorage.setItem("operations",JSON.stringify(storeEvaluation.operations));
-				sessionStorage.setItem("index",storeEvaluation.index);
 			}
 		}
 	};
