@@ -252,6 +252,101 @@
 	</section>
 </script>
 
+<!-- Template global statistic -->
+<script id="statistics" type="text/x-template">
+	<section>
+
+		<!-- Mode statistics choice -->
+		<article id="content-learning">
+			<h1 class="header center">Statistiques globales</h1>
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Ici tu peux voir tes statistiques globales sur le mode de ton choix afin de repérer les opérations/tables qui te posent problème</p>
+					<p>Choisis le mode de jeu pour lequel tu veux voir les statistiques</p>
+				</div>
+				<div class="card-tabs">
+					<ul v-if="trainExist || evaluateExist" class="tabs tabs-fixed-width">
+						<li class="tab">
+							<a v-if="evaluateExist" v-on:click="computeEvaluateStatistics()">Statistique d'evaluation</a>
+						</li>
+						<li class="tab">
+							<a v-if="trainExist" v-on:click="computeTrainStatistics()">Statistique d'apprentissage</a>
+						</li>
+					</ul>
+					<ul v-else class="tabs tabs-fixed-width">
+						<li class="tab">
+							<p>Aucune statistiques n'existe pour le moment. Il faut jouer avant de pouvoir afficher des statistiques!</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+
+		<!-- Statistic view -->
+		<template v-if="displayTrain">
+			<h1 class="header center">Statistiques du mode d'apprentissage</h1>
+			<article v-for="statistic in statistics">
+				<h2>Résultat de l'entrainement sur la table de {{ statistic.table }} ({{ statistic.nb }} entrainement):</h2>
+				<table class="bordered highlight table-score">
+					<thead>
+					<tr>
+						<th data-field="operation">Opération</th>
+						<th data-field="errors">Erreurs</th>
+						<th deta-field="averageError">Moyenne d'erreurs</th>
+						<th deta-field="averageTime">Moyenne de temps</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="stat in statistic.stat">
+						<td>{{ statistic.table }} x {{ stat.multiplier }}</td>
+						<td><span v-for="error in stat.errors">
+							<span v-if="stat.averageError == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ error }}, </span>
+						</span></td>
+						<td>
+							<span v-if="stat.averageError == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ stat.averageError }}</span>
+						</td>
+						<td>{{ stat.averageTime }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+		</template>
+		<template v-if="displayEvaluate">
+			<h1 class="header center">Statistiques du mode d'évaluation</h1>
+			<article>
+				<table class="bordered highlight table-score">
+					<thead>
+					<tr>
+						<th data-field="operation">Opération</th>
+						<th data-field="attempt">Nombre</th>
+						<th data-field="errors">Erreurs</th>
+						<th deta-field="averageError">Moyenne d'erreurs</th>
+						<th deta-field="averageTime">Moyenne de temps</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="statistic in statistics">
+						<td>{{ statistic.multiplier1 }} x {{ statistic.multiplier2 }}</td>
+						<td>{{ statistic.nb }}</td>
+						<td><span v-for="error in statistic.errors">
+							<span v-if="statistic.averageError == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ error }}, </span>
+						</span></td>
+						<td>
+							<span v-if="statistic.averageError == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ statistic.averageError }}</span>
+						</td>
+						<td>{{ statistic.averageTime }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+		</template>
+	</section>
+</script>
+
 <!-- External libs -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="js/lib/jquery/dist/jquery.min.js"></script>
@@ -260,11 +355,12 @@
 <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
 
 <!-- Internal libs -->
-<script src="js/global.js"></script>
+<script src="js/localStorageManager.js"></script>
 <script src="js/store.js"></script>
 <script src="js/home.js"></script>
 <script src="js/evaluate.js"></script>
 <script src="js/train.js"></script>
+<script src="js/statistics.js"></script>
 <script src="js/router.js"></script>
 </body>
 </html>

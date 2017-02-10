@@ -10,15 +10,22 @@ var time = {
   end : 0
 };
 
-var storeEvaluation =
-	{
-		index : 0,
-		operations: [],
-		currentOperation : 0
-	}
+var storeEvaluation =	{
+	index : 0,
+	operations: [],
+	currentOperation : 0
+};
 
 var storage = {
   storageExist : false,
   saveUri : null,
   message : null
-}
+};
+
+var globalStatistics = {
+  statistics : [],
+  trainExist : false,
+  evaluateExist : false,
+  displayTrain : false,
+  displayEvaluate : false
+};
