@@ -53,6 +53,9 @@
 <script id="home" type="text/x-template">
 	<article>
 		<h1 class="header center">Choisis ton mode de jeu</h1>
+		<template v-if="message">
+			<p>{{ message }}</p>
+		</template>
 		<div class="row">
 			<div class="col s6 m6">
 				<div class="card">
@@ -81,21 +84,34 @@
 				</div>
 			</div>
 		</div>
+
+		<template v-if="storageExist">
+			<h2>Sauvegarder ma partie:</h2>
+			<p>Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: <a :href="saveUri" download="timesTableSavegame.save">télécharger ma sauvegarde</a></p>
+		</template>
+		<template v-else>
+			<h2>Restaurer ma partie:</h2>
+			<p>Nous n'avons pas de partie enregistré sur cet ordinateur! Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
+			<input type="file" id="input" @change="importSave($event)">
+		</template>
 	</article>
+	
 </script>
 <script id="learning" type="text/x-template">
 	<section>
 		<article id="content-learning">
 			<h1 class="header center">Mode apprentissage</h1>
 			<div class="row">
-				<div class="card deep-purple lighten-2">
 					<div class="card-content" deep-purple lighten-4>
 						<p>Grâce au mode apprentissage, tu peux choisir quelle table de multiplication réviser !</p>
 						<p>Choisis ta table de multiplication</p>
 					</div>
 					<div class="card-tabs">
 						<ul class="tabs tabs-fixed-width">
-							<li v-for="n in 9" class="tab"><a v-on:click="play(n)">{{ n }}</a></li>
+							<li v-for="n in 9" class="tab">
+								<button v-if="table == n" class="btn red">{{ n }}</button>
+                                                        	<button v-else v-on:click="play(n)" class="btn">{{ n }}</button>
+							</li>
 						</ul>
 					</div>
 				</div>

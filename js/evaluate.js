@@ -28,6 +28,8 @@ var evaluation =
 
 			// Get the current operation
 			storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
+			//start and store the start in seconds
+			time.start = new Date().getTime() / 1000;
 		},
 		methods: {
 			generateChoices: function(operation){
@@ -113,6 +115,10 @@ var evaluation =
 				if(choice != storeEvaluation.currentOperation.result) {
 					storeEvaluation.currentOperation.errors++;
 				} else {
+					//we store the stop time in second
+          			time.stop = new Date().getTime() / 1000;
+          			//we store the difference between start and stop time.
+          			storeEvaluation.operations[storeEvaluation.index].time = Math.round(time.stop - time.start);
 					this.nextOperation();
 				}
 			},
@@ -124,6 +130,7 @@ var evaluation =
 				if (storeEvaluation.index != storeEvaluation.operations.length - 1) {
 					storeEvaluation.operations[storeEvaluation.index] = storeEvaluation.currentOperation;
 					storeEvaluation.currentOperation = storeEvaluation.operations[++storeEvaluation.index];
+					time.start = new Date().getTime() / 1000;
 				} else {
 					storeEvaluation.index ++;
 					storeEvaluation.currentOperation = 0;

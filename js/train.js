@@ -9,14 +9,18 @@ var learning = {
     //-----------------------------------
     //init function lauching the game
     play: function(tableNumber) {
-      console.log(getLocalStorage());
+      //initGame
+      store.round = 0;
       //generate all the operation
       this.compute(tableNumber);
       //set the first round (0+1) and so start it.
       store.round++;
+      //start and store the start in seconds
+      time.start = new Date().getTime() / 1000;
     },
     //check the user response and alter the game in consequence
     playRound: function(roundNumber, userChoice) {
+
       //we keep playing unless we have already done 10 turn
       if (roundNumber <= 10){
         store.userChoices.push(userChoice);
@@ -25,9 +29,14 @@ var learning = {
           store.operations[roundNumber-1].error++;
         } else { //right answer
           //we archive userChoices then reset it.
+          //we store the stop time in second
+          time.stop = new Date().getTime() / 1000;
+          //we store the difference between start and stop time.
+          store.operations[roundNumber-1].time = Math.round(time.stop - time.start);
           store.operations[roundNumber-1].userChoices = store.userChoices;
           store.userChoices = [];
           store.round++;
+          time.start = new Date().getTime() / 1000;
         }
       }
     },
@@ -77,10 +86,7 @@ var learning = {
         array[random2] = tmp;
       }
       return array;
-    },
-    // timer: function(e) {
-
-    // },
+    }
   },
   
 };

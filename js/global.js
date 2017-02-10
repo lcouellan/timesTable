@@ -11,6 +11,10 @@ function initLocalStorage() {
   localStorage.setItem(LOCAL_STORAGE_NAME, toStore);
 }
 
+function destroyStorage() {
+  localStorage.removeItem(LOCAL_STORAGE_NAME);
+}
+
 //when called this function store the result from the store to local storage
 function updateLocalStorage(type, content) {
   if(!(LOCAL_STORAGE_NAME in localStorage)) {
@@ -27,6 +31,15 @@ function updateLocalStorage(type, content) {
   localStorage.setItem(LOCAL_STORAGE_NAME, toStore);
 }
 
+//override the localStorage with a save
+function backUpStorageFromSave(save) {
+  if(!(LOCAL_STORAGE_NAME in localStorage)) {
+    //we create the localStorage
+    initLocalStorage();
+  }
+  localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(save));
+}
+
 function getLocalStorage() {
-  return storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+  return JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
 }
