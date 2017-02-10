@@ -85,6 +85,10 @@ nav .brand-logo {
 #content-learning .card .card-content p {
 	color: white;
 }
+#content-learning .card .card-tabs .selected {
+	color: #9575cd;
+	opacity: 1;
+}
 
 /* Opérations */
 

@@ -12,8 +12,10 @@
 </head>
 <body>
 
-<!-- VUE PRINCIPALE -->
+<!-- Main view -->
 <div id="app" class="container">
+
+	<!-- Navigation menu -->
 	<nav>
 		<div class="nav-wrapper">
 			<router-link to="/" class="brand-logo">
@@ -38,9 +40,13 @@
 			</ul>
 		</div>
 	</nav>
+
+	<!-- Main content of the page -->
 	<div id="main">
 		<router-view></router-view>
 	</div>
+
+	<!-- Footer -->
 	<footer class="page-footer">
 		<div class="footer-copyright">
 			<div class="container">
@@ -50,13 +56,23 @@
 		</div>
 	</footer>
 </div>
+
+<!-- Our templates -->
+
+<!-- Template home page -->
 <script id="home" type="text/x-template">
 	<article>
 		<h1 class="header center">Choisis ton mode de jeu</h1>
+
+		<!-- Message with import saved datas -->
 		<template v-if="message">
 			<p>{{ message }}</p>
 		</template>
+
+		<!-- Choice between learning mode / evaluation mode -->
 		<div class="row">
+
+			<!-- Training mode -->
 			<div class="col s6 m6">
 				<div class="card">
 					<div class="card-image">
@@ -70,6 +86,8 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Evaluation mode -->
 			<div class="col s6 m6">
 				<div class="card">
 					<div class="card-image">
@@ -85,39 +103,54 @@
 			</div>
 		</div>
 
+		<!-- Data export -->
 		<template v-if="storageExist">
-			<h2>Sauvegarder ma partie:</h2>
-			<p>Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: <a :href="saveUri" download="timesTableSavegame.save">télécharger ma sauvegarde</a></p>
+			<h2 class="header center">Sauvegarder ma partie:</h2>
+			<p class="center">Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: </p>
+			<p class="center"><a :href="saveUri" download="timesTableSavegame.save" class="btn"><i class="material-icons left">cloud_download</i>télécharger ma sauvegarde</a></p>
 		</template>
+
+		<!-- Data import -->
 		<template v-else>
-			<h2>Restaurer ma partie:</h2>
-			<p>Nous n'avons pas de partie enregistré sur cet ordinateur! Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
-			<input type="file" id="input" @change="importSave($event)">
+			<h2 class="header center">Restaurer ma partie:</h2>
+			<p class="center">Nous n'avons pas de partie enregistré sur cet ordinateur!<br/> Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
+			<div class="file-field input-field">
+				<div class="btn">
+					<span>Sauvegarde</span>
+					<input type="file" id="input" @change="importSave($event)">
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text">
+				</div>
+			</div>
 		</template>
 	</article>
-	
 </script>
+
+<!-- Template learning mode -->
 <script id="learning" type="text/x-template">
 	<section>
+
+		<!-- Table choice -->
 		<article id="content-learning">
 			<h1 class="header center">Mode apprentissage</h1>
-			<div class="row">
-					<div class="card-content" deep-purple lighten-4>
-						<p>Grâce au mode apprentissage, tu peux choisir quelle table de multiplication réviser !</p>
-						<p>Choisis ta table de multiplication</p>
-					</div>
-					<div class="card-tabs">
-						<ul class="tabs tabs-fixed-width">
-							<li v-for="n in 9" class="tab">
-								<button v-if="table == n" class="btn red">{{ n }}</button>
-                                                        	<button v-else v-on:click="play(n)" class="btn">{{ n }}</button>
-							</li>
-						</ul>
-					</div>
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Grâce au mode apprentissage, tu peux choisir quelle table de multiplication réviser !</p>
+					<p>Choisis ta table de multiplication</p>
+				</div>
+				<div class="card-tabs">
+					<ul class="tabs tabs-fixed-width">
+						<li v-for="n in 9" class="tab">
+							<a v-if="table == n" class="selected">{{ n }}</a>
+							<a v-else v-on:click="play(n)">{{ n }}</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</article>
 
+		<!-- Operation view -->
 		<template v-if="table != 0 && round < 11">
 			<article class="content-operation">
 				<h2 class="header center">Table de {{ table }}</h2>
@@ -133,6 +166,7 @@
 			</article>
 		</template>
 
+		<!-- User stats -->
 		<template v-if="round == 11">
 			{{ end() }}
 			<article>
@@ -160,63 +194,72 @@
 					</tr>
 					</tbody>
 				</table>
-
 			</article>
 		</template>
 	</section>
 </script>
+
+<!-- Template evaluation mode -->
 <script id="evaluation" type="text/x-template">
-			<div v-if="index < operations.length">
-				<h1 class="header center">Page d'évaluation</h1>
-				<article class="content-operation">
-				<p class="text-tour">Opération {{ index+1 }} sur 10</p>
-				<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
-				<p>Choisi la bonne réponse:</p>
-				<div class="answers">
+
+	<!-- Check there is still operations left -->
+	<div v-if="index < operations.length">
+		<h1 class="header center">Page d'évaluation</h1>
+
+		<!-- Operation view -->
+		<article class="content-operation">
+			<p class="text-tour">Opération {{ index+1 }} sur 10</p>
+			<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
+			<p>Choisi la bonne réponse:</p>
+			<div class="answers">
 				<span v-for="choice in currentOperation.choices">
 					<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
 					<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
 				</span>
-				</div>
-				</article>
-			</div>
-			<div v-else>
-				<h1 class="header center">Résultats de l'évaluation</h1>
-				<table class="bordered highlight table-score">
-					<thead>
-					<tr>
-						<th data-field="operation">Opération</th>
-						<th data-field="result">Résultat</th>
-						<th data-field="errors">Nombre d'erreurs</th>
-						<th deta-field="answers">Réponses données</th>
-						<th data-field="timer">Temps</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr v-for="operation in operations">
-						<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
-						<td>{{ operation.result }}</td>
-						<td>
-							<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
-							<span v-else class="mistakes">{{ operation.errors }}</span>
-						</td>
-						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
-						<td>{{ operation.time }}</td>
-					</tr>
-					</tbody>
-				</table>
 			</div>
 		</article>
-		</template>
+	</div>
+
+	<!-- User stats -->
+	<div v-else>
+		<h1 class="header center">Résultats de l'évaluation</h1>
+		<table class="bordered highlight table-score">
+			<thead>
+			<tr>
+				<th data-field="operation">Opération</th>
+				<th data-field="result">Résultat</th>
+				<th data-field="errors">Nombre d'erreurs</th>
+				<th deta-field="answers">Réponses données</th>
+				<th data-field="timer">Temps</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr v-for="operation in operations">
+				<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
+				<td>{{ operation.result }}</td>
+				<td>
+					<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
+					<span v-else class="mistakes">{{ operation.errors }}</span>
+				</td>
+				<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
+				<td>{{ operation.time }}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	</article>
+	</template>
 	</section>
 </script>
 
+<!-- External libs -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="js/lib/jquery/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 <script src="js/lib/vue-router/dist/vue-router.js"></script>
 <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
 
+<!-- Internal libs -->
 <script src="js/global.js"></script>
 <script src="js/store.js"></script>
 <script src="js/home.js"></script>
