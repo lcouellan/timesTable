@@ -4,7 +4,10 @@ var learning = {
     return storeTraining
   },
 	created: function () {
-		storeTraining.tablesDone = this.getTablesDone();
+    if (localStorageExist()) {
+		  storeTraining.tablesDone = this.getTablesDone();
+      storeTraining.activeUser = getActiveUserName();
+    }
 	},
   methods: {
     //-----------------------------------

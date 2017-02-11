@@ -51,6 +51,7 @@ var home = {
       reader.onload = onLoadCallback;
       reader.readAsText(file);
     },
+    //method use for create a new family and the default user
     createFamily: function(event) {
       let firstName = event.target[0].value;
       let lastName = event.target[1].value;
@@ -64,10 +65,12 @@ var home = {
         storage.message = "Tu dois indiquer ton nom et ton prénom!";
       }
     },
+    //method use for changing the active user when there is multiple profil
     changeActiveUser: function(user) {
       setActiveProfil(user);
       storage.activeUser = user;
     },
+    //method use for wipe all data
     wipeAllData: function() {
       destroyStorage();
       storage.message = "Données correctement supprimées";

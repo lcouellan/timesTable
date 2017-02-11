@@ -4,11 +4,14 @@ var statistics = {
     return globalStatistics
   },
   created: function() {
-    globalStatistics.statistics = [];
-    globalStatistics.displayTrain = false;
-    globalStatistics.displayEvaluate = false;
-    globalStatistics.trainExist = localStorageTrainExist() ? true : false;
-    globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
+    if (localStorageExist()) {
+      globalStatistics.statistics = [];
+      globalStatistics.displayTrain = false;
+      globalStatistics.displayEvaluate = false;
+      globalStatistics.trainExist = localStorageTrainExist() ? true : false;
+      globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
+      globalStatistics.activeUser = getActiveUserName();
+    }
   },
   methods: {
     //prepare the evaluate data for the generation of statistic (group)
