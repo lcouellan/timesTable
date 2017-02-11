@@ -5,31 +5,40 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
-			
-			// Create 10 multiplications for Evaluation Mode
-			for (let i = 0; i < 10; i++) {
-				let operation = {
-					multiplier1 : 0,
-					multiplier2 : 0,
-					result : 0,
-					choices : [],
-					errors : 0,
-					userChoices : [],
-					time : 0
-				};
-
-				// Save operation
-				operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
-				operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
-				operation.result = operation.multiplier1 * operation.multiplier2;
-				operation.choices = this.generateChoices(operation);
-				storeEvaluation.operations.push(operation);
+			if(!localStorageExist()) {
+				//we create the localStorage
+				initLocalStorage();
 			}
+			let exercisesDone = getLocalStorage().finishedTables.length;
 
-			// Get the current operation
-			storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
-			//start and store the start in seconds
-			time.start = new Date().getTime() / 1000;
+			if (exercisesDone == 9)
+			{
+				storeEvaluation.trainingDone = true;
+				// Create 10 multiplications for Evaluation Mode
+				for (let i = 0; i < 10; i++) {
+					let operation = {
+						multiplier1 : 0,
+						multiplier2 : 0,
+						result : 0,
+						choices : [],
+						errors : 0,
+						userChoices : [],
+						time : 0
+					};
+
+					// Save operation
+					operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+					operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+					operation.result = operation.multiplier1 * operation.multiplier2;
+					operation.choices = this.generateChoices(operation);
+					storeEvaluation.operations.push(operation);
+				}
+
+				// Get the current operation
+				storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
+				//start and store the start in seconds
+				time.start = new Date().getTime() / 1000;
+			}
 		},
 		methods: {
 			generateChoices: function(operation){

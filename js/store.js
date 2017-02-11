@@ -1,6 +1,7 @@
-var store = {
+var storeTraining = {
   table : 0,
   round : 0,
+	tablesDone : [],
   operations : [],
   userChoices : []
 };
@@ -11,6 +12,7 @@ var time = {
 };
 
 var storeEvaluation =	{
+	trainingDone : false,
 	index : 0,
 	operations: [],
 	currentOperation : 0
