@@ -14,7 +14,7 @@ var home = {
   methods: {
     //we parse the localStorage in URI (the user can download it but we don't have to generate the file in the server)
     generateSaveHtmlLink: function () {
-      let saveJson = encodeURIComponent(JSON.stringify(getUserActiveLocalStorage()));
+      let saveJson = encodeURIComponent(JSON.stringify(getLocalStorage()));
       let saveUri = "data:text/json;charset=utf-8,"+saveJson;
 
       storage.saveUri = saveUri;
@@ -30,11 +30,13 @@ var home = {
           let content = e.target.result;
           let save = JSON.parse(content);
           //we check if the object is properly build
-          if (save[LOCAL_EVALUATE_COL] && save[LOCAL_TRAIN_COL]) {
+          if (save[LOCAL_PROFILS_NAME] && save[LOCAL_PROFIL_ACTIVE]) {
             //we store the save in the localStorage
             backUpStorageFromSave(save);
             storage.message = "Ta sauvegarde a bien été importée!";
             storage.error = false;
+            storage.activeUser = getActiveUserName();
+            storage.allUsers = getUsersName();
           } else {
             storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
             storage.error = true;
@@ -75,7 +77,8 @@ var home = {
       destroyStorage();
       storage.message = "Données correctement supprimées";
       storage.storageExist = false;
-      this.activeUser = null;
+      storage.activeUser = null;
+      storage.allUsers = null;
     }
   }
 };

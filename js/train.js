@@ -123,11 +123,7 @@ var learning = {
 		  }
 	  },
 	  getTablesDone: function () {
-		  if(!localStorageExist()) {
-			  //we create the localStorage
-			  initLocalStorage();
-		  }
-		  return getUserActiveLocalStorage().finishedTables;
+		  return getUserActiveLocalStorage()[LOCAL_FINISH_COL];
 	  },
 	  isDone: function (tableNumber) {
 		  return storeTraining.tablesDone.includes(tableNumber);

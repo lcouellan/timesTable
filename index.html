@@ -66,6 +66,8 @@
 	<article>		
 		<!-- Change profile -->
 		<template v-if="activeUser != null && allUsers.length > 1">
+			<h2 class="header center">Selectionnes ton profil!</h2>
+			<p>Le profil en rouge est celui qui est actuellement selectionné.</p>
 			<span v-for="user in allUsers">
 				<button v-if="user == activeUser" class="btn red">{{ user }}</button>
 				<button v-else class="btn" v-on:click="changeActiveUser(user)">{{ user }}</button>
@@ -325,7 +327,7 @@
 	<section v-if="activeUser != null">
 		<!-- Mode statistics choice -->
 		<article id="content-stats">
-			<h1 class="header center">Statistiques globales</h1>
+			<h1 class="header center">Statistiques globales de {{ activeUser }}</h1>
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Ici tu peux voir tes statistiques globales sur le mode de ton choix afin de repérer les opérations/tables qui te posent problème</p>

@@ -58,14 +58,15 @@ function initProfilLocalStorage(family, name) {
 //----------------------------------------------
 function addProfilToStorage(name) {
   let storage = getLocalStorage();
+
+  storage[LOCAL_PROFIL_ACTIVE] = name;
   storage[LOCAL_PROFILS_NAME].push({
     [LOCAL_PROFIL_NAME] : name,
     [LOCAL_EVALUATE_COL] : [],
     [LOCAL_TRAIN_COL] : [],
     [LOCAL_FINISH_COL] : []
   });
-  storage[LOCAL_PROFIL_ACTIVE] = name;
-
+  
   setLocalStorage(storage);
 }
 
@@ -79,7 +80,7 @@ function getActiveProfilIndex(storage) {
   if (storage[LOCAL_PROFILS_NAME].length === 1) {
     return 0;
   }
-  for (let i=0; i < storage.length; i++) {
+  for (let i=0; i < storage[LOCAL_PROFILS_NAME].length; i++) {
     if (storage[LOCAL_PROFILS_NAME][i][LOCAL_PROFIL_NAME] === storage[LOCAL_PROFIL_ACTIVE]) {
       return i;
     }
@@ -142,6 +143,7 @@ function getLocalStorage() {
 function getUserActiveLocalStorage() {
   let storage = getLocalStorage();
   let profilIndex = getActiveProfilIndex(storage);
+
   return storage[LOCAL_PROFILS_NAME][profilIndex];
 }
 

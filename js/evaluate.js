@@ -138,8 +138,6 @@ var evaluation =
 				// Check there is more operations
 				if (storeEvaluation.index != storeEvaluation.operations.length - 1) {
 					storeEvaluation.operations[storeEvaluation.index] = storeEvaluation.currentOperation;
-					console.log(storeEvaluation.currentOperation.errors);
-					console.log(storeEvaluation.currentOperation.time);
 					if ( storeEvaluation.currentOperation.errors > 1 || storeEvaluation.currentOperation.time > 15) {
 						this.setOperationWithProblem();
 					}
