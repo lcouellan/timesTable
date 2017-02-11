@@ -13,6 +13,7 @@ var learning = {
     //init function lauching the game
     play: function(tableNumber) {
       //initGame
+      storeTraining.tablesDone = this.getTablesDone();
       storeTraining.round = 0;
       //generate all the operation
       this.compute(tableNumber);
@@ -40,13 +41,23 @@ var learning = {
           storeTraining.userChoices = [];
           storeTraining.round++;
           time.start = new Date().getTime() / 1000;
+
+          //end of the game:
+          if (roundNumber == storeTraining.operations.length) {
+            this.end();
+          }
         }
       }
     },
     
     end: function() {
       this.userFinishExercise();
-	    updateLocalStorage(LOCAL_TRAIN_COL, storeTraining);
+	    updateLocalStorage(LOCAL_TRAIN_COL, {
+        table : storeTraining.table,
+        round : storeTraining.round,
+        operations : storeTraining.operations,
+        userChoices : storeTraining.userChoices
+      });
     },
     //-----------------------------------
     //Game methods call by backend
@@ -104,6 +115,7 @@ var learning = {
 			  }
 		  }
 		  if (done == false) {
+        storeTraining.tablesDone.push(storeTraining.table);
 			  updateLocalStorage(LOCAL_FINISH_COL, storeTraining.table);
 		  }
 	  },
