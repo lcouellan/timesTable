@@ -4,8 +4,8 @@ var statistics = {
     return globalStatistics
   },
   created: function() {
-    globalStatistics.trainExist = localStorageEvaluateExist() ? true : false;
-    globalStatistics.evaluateExist = localStorageTrainExist() ? true : false;
+    globalStatistics.trainExist = localStorageTrainExist() ? true : false;
+    globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
   },
   methods: {
     //prepare the evaluate data for the generation of statistic (group)

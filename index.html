@@ -52,6 +52,7 @@
 			<div class="container">
 				© 2017 DNR2I
 				<router-link to="/" class="grey-text text-lighten-4 right">Retour à l'accueil</router-link>
+				<router-link to="/statistiques" class="grey-text text-lighten-4 right">Voir mes statistiques</router-link>
 			</div>
 		</div>
 	</footer>
@@ -82,7 +83,7 @@
 						<p>Révise tes tables de multiplication avec le mode apprentissage !</p>
 					</div>
 					<div class="card-action">
-						<router-link :to="{ name: 'learning' }">Commencez l'entraînement</router-link>
+						<router-link :to="{ name: 'learning' }">Commencer l'entraînement</router-link>
 					</div>
 				</div>
 			</div>
@@ -97,7 +98,7 @@
 						<p>Test tes connaissances avec le mode évaluation !</p>
 					</div>
 					<div class="card-action">
-						<router-link :to="{ name: 'evaluation' }">Commencez l'évaluation</router-link>
+						<router-link :to="{ name: 'evaluation' }">Commencer l'évaluation</router-link>
 					</div>
 				</div>
 			</div>
@@ -137,7 +138,7 @@
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Grâce au mode apprentissage, tu peux choisir quelle table de multiplication réviser !</p>
-					<p>Choisis ta table de multiplication</p>
+					<p>Choisis ta table de multiplication<span class="new badge" data-badge-caption="tables différentes faite">{{ tablesDone.length }}</span></p>
 				</div>
 				<div class="card-tabs">
 					<ul class="tabs tabs-fixed-width">
@@ -151,9 +152,9 @@
 		</article>
 
 		<!-- Operation view -->
-		<template v-if="table != 0 && round < 11">
+		<template v-if="table != 0 && round < operations.length + 1">
 			<article class="content-operation">
-				<h2 class="header center">Table de {{ table }}</h2>
+				<h2 class="header center">Table de {{ table }} <span v-if="isDone(table)"class="new badge" data-badge-caption="faite">{{ &nbsp; }}</span></h2>
 				<p class="text-tour">Opération {{round}} sur 10</p>
 				<h3 class="center">{{ table }} x {{ operations[round-1].multiplier }} =</h3>
 				<p>Choisi la bonne réponse:</p>
@@ -167,7 +168,7 @@
 		</template>
 
 		<!-- User stats -->
-		<template v-if="round == 11">
+		<template v-if="round == operations.length + 1">
 			{{ end() }}
 			<article>
 				<h1 class="header center">Résultat de l'entrainement sur la table de {{ table }}:</h1>
@@ -178,7 +179,7 @@
 						<th data-field="result">Résultat</th>
 						<th deta-field="errors">Nombre d'erreurs</th>
 						<th deta-field="answers">Réponses données</th>
-						<th data-field="timer">Temps</th>
+						<th data-field="timer">Temps (en s)</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -202,54 +203,71 @@
 <!-- Template evaluation mode -->
 <script id="evaluation" type="text/x-template">
 
-	<!-- Check there is still operations left -->
-	<div v-if="index < operations.length">
-		<h1 class="header center">Page d'évaluation</h1>
+	<!-- Check if the user had done the training mode -->
+	<div v-if="!trainingDone">
+		<h1 class="header center">Mode évaluation</h1>
+		<article id="content-check-training">
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Avant de pouvoir faire le mode évaluation, finis d'abord le mode apprentissage.</p>
+					<p>Pour cela, tu dois finir chaque table de multiplication.</p>
+				</div>
+				<div class="card-action white">
+					<router-link to="/apprentissage">
+						Commencer l'entraînement
+					</router-link>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div v-else>
 
-		<!-- Operation view -->
-		<article class="content-operation">
-			<p class="text-tour">Opération {{ index+1 }} sur 10</p>
-			<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
-			<p>Choisi la bonne réponse:</p>
-			<div class="answers">
+		<!-- Check there is still operations left -->
+		<div v-if="index < operations.length">
+			<h1 class="header center">Mode évaluation</h1>
+
+			<!-- Operation view -->
+			<article class="content-operation">
+				<p class="text-tour">Opération {{ index+1 }} sur 10</p>
+				<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
+				<p>Choisi la bonne réponse:</p>
+				<div class="answers">
 				<span v-for="choice in currentOperation.choices">
 					<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
 					<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
 				</span>
-			</div>
-		</article>
-	</div>
+				</div>
+			</article>
+		</div>
 
-	<!-- User stats -->
-	<div v-else>
-		<h1 class="header center">Résultats de l'évaluation</h1>
-		<table class="bordered highlight table-score">
-			<thead>
-			<tr>
-				<th data-field="operation">Opération</th>
-				<th data-field="result">Résultat</th>
-				<th data-field="errors">Nombre d'erreurs</th>
-				<th deta-field="answers">Réponses données</th>
-				<th data-field="timer">Temps</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr v-for="operation in operations">
-				<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
-				<td>{{ operation.result }}</td>
-				<td>
-					<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
-					<span v-else class="mistakes">{{ operation.errors }}</span>
-				</td>
-				<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
-				<td>{{ operation.time }}</td>
-			</tr>
-			</tbody>
-		</table>
+		<!-- User stats -->
+		<div v-else>
+			<h1 class="header center">Résultats de l'évaluation</h1>
+			<table class="bordered highlight table-score">
+				<thead>
+				<tr>
+					<th data-field="operation">Opération</th>
+					<th data-field="result">Résultat</th>
+					<th data-field="errors">Nombre d'erreurs</th>
+					<th deta-field="answers">Réponses données</th>
+					<th data-field="timer">Temps (en s)</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr v-for="operation in operations">
+					<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
+					<td>{{ operation.result }}</td>
+					<td>
+						<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
+						<span v-else class="mistakes">{{ operation.errors }}</span>
+					</td>
+					<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
+					<td>{{ operation.time }}</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	</article>
-	</template>
-	</section>
 </script>
 
 <!-- Template global statistic -->
@@ -257,7 +275,7 @@
 	<section>
 
 		<!-- Mode statistics choice -->
-		<article id="content-learning">
+		<article id="content-stats">
 			<h1 class="header center">Statistiques globales</h1>
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
@@ -273,11 +291,9 @@
 							<a v-if="trainExist" v-on:click="computeTrainStatistics()">Statistique d'apprentissage</a>
 						</li>
 					</ul>
-					<ul v-else class="tabs tabs-fixed-width">
-						<li class="tab">
+					<div v-else class="card-content grey lighten-4">
 							<p>Aucune statistiques n'existe pour le moment. Il faut jouer avant de pouvoir afficher des statistiques!</p>
-						</li>
-					</ul>
+					</div>
 				</div>
 			</div>
 		</article>
@@ -286,14 +302,14 @@
 		<template v-if="displayTrain">
 			<h1 class="header center">Statistiques du mode d'apprentissage</h1>
 			<article v-for="statistic in statistics">
-				<h2>Résultat de l'entrainement sur la table de {{ statistic.table }} ({{ statistic.nb }} entrainement):</h2>
+				<h2 class="center table-title">Résultat de l'entrainement sur la table de {{ statistic.table }} ({{ statistic.nb }} entrainement):</h2>
 				<table class="bordered highlight table-score">
 					<thead>
 					<tr>
 						<th data-field="operation">Opération</th>
 						<th data-field="errors">Erreurs</th>
 						<th deta-field="averageError">Moyenne d'erreurs</th>
-						<th deta-field="averageTime">Moyenne de temps</th>
+						<th deta-field="averageTime">Moyenne de temps (en s)</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -323,7 +339,7 @@
 						<th data-field="attempt">Nombre</th>
 						<th data-field="errors">Erreurs</th>
 						<th deta-field="averageError">Moyenne d'erreurs</th>
-						<th deta-field="averageTime">Moyenne de temps</th>
+						<th deta-field="averageTime">Moyenne de temps (en s)</th>
 					</tr>
 					</thead>
 					<tbody>

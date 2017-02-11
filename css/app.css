@@ -18,6 +18,9 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 26px;
 	font-size: 36px;
 }
+.table-title {
+	font-size: 26px;
+}
 body, p, li{
 	font-family: 'Lato',sans-serif;
 	color: #373737;
@@ -82,10 +85,14 @@ nav .brand-logo {
 
 /* Apprentissage */
 
-#content-learning .card .card-content p {
+#content-learning .card > .card-content p,
+#content-stats .card > .card-content p,
+#content-check-training .card > .card-content p{
 	color: white;
 }
-#content-learning .card .card-tabs .selected {
+#content-learning .card .card-tabs .selected,
+#content-stats .card .card-tabs .selected,
+#content-check-training .card .card-tabs .selected{
 	color: #9575cd;
 	opacity: 1;
 }
@@ -128,4 +135,7 @@ footer.page-footer {
 }
 footer.page-footer .footer-copyright {
 	background-color: #9575cd;
+}
+footer.page-footer .footer-copyright .grey-text {
+	padding: 0 10px;
 }

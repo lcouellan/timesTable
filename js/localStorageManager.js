@@ -1,12 +1,14 @@
 const LOCAL_STORAGE_NAME = "timesTableGame";
 const LOCAL_EVALUATE_COL = "evaluate";
 const LOCAL_TRAIN_COL = "train";
+const LOCAL_FINISH_COL = "finishedTables";
 
 //create a structured but empty localStorage
 function initLocalStorage() {
   let toStore = JSON.stringify({
     [LOCAL_EVALUATE_COL] : [],
-    [LOCAL_TRAIN_COL] : []
+    [LOCAL_TRAIN_COL] : [],
+	  [LOCAL_FINISH_COL] : []
   });
   localStorage.setItem(LOCAL_STORAGE_NAME, toStore);
 }
