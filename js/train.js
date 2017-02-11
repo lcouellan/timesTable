@@ -107,7 +107,7 @@ var learning = {
 			  //we create the localStorage
 			  initLocalStorage();
 		  }
-		  let exercicesDone = getLocalStorage().train;
+		  let exercicesDone = getUserActiveLocalStorage().train;
 		  let done = false;
 		  for(let i = 0; i < exercicesDone.length; i++) {
 			  if ( storeTraining.table == exercicesDone[i].table) {
@@ -124,7 +124,7 @@ var learning = {
 			  //we create the localStorage
 			  initLocalStorage();
 		  }
-		  return getLocalStorage().finishedTables;
+		  return getUserActiveLocalStorage().finishedTables;
 	  },
 	  isDone: function (tableNumber) {
 		  return storeTraining.tablesDone.includes(tableNumber);

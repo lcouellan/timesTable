@@ -4,8 +4,7 @@ var home = {
     return storage
   },
   created: function () {
-   destroyStorage(); //for testing the import of save
-    if (LOCAL_STORAGE_NAME in localStorage) {
+    if (localStorageExist()) {
       storage.storageExist = true;
       this.generateSaveHtmlLink();
     }
@@ -13,7 +12,7 @@ var home = {
   methods: {
     //we parse the localStorage in URI (the user can download it but we don't have to generate the file in the server)
     generateSaveHtmlLink: function () {
-      let saveJson = encodeURIComponent(JSON.stringify(getLocalStorage()));
+      let saveJson = encodeURIComponent(JSON.stringify(getUserActiveLocalStorage()));
       let saveUri = "data:text/json;charset=utf-8,"+saveJson;
 
       storage.saveUri = saveUri;
@@ -49,6 +48,23 @@ var home = {
       var reader = new FileReader();
       reader.onload = onLoadCallback;
       reader.readAsText(file);
+    },
+    createFamily: function(event) {
+      let firstName = event.target[0].value;
+      let lastName = event.target[1].value;
+
+      if (firstName && lastName) {
+        initProfilLocalStorage(lastName, firstName);
+        storage.message = "Ton profil et famille ont bien été créés!";
+        storage.storageExist = true;
+      } else {
+        storage.message = "Tu dois indiquer ton nom et ton prénom!";
+      }
+    },
+    wipeAllData: function() {
+      destroyStorage();
+      storage.message = "Données correctement supprimées";
+      storage.storageExist = false;
     }
   }
 };

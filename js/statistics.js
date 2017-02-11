@@ -16,7 +16,7 @@ var statistics = {
       globalStatistics.displayEvaluate = true;
       globalStatistics.displayTrain = false;
       globalStatistics.statistics = [];
-      let evStorage = getLocalStorage()[LOCAL_EVALUATE_COL];
+      let evStorage = getUserActiveLocalStorage()[LOCAL_EVALUATE_COL];
       let evStorages = [];
       for (let i=0; i < evStorage.length; i++) {
         if (i===0) {
@@ -123,7 +123,7 @@ var statistics = {
       globalStatistics.displayTrain = true;
       globalStatistics.displayEvaluate = false;
       globalStatistics.statistics = [];
-      let trainStorage = getLocalStorage()[LOCAL_TRAIN_COL];
+      let trainStorage = getUserActiveLocalStorage()[LOCAL_TRAIN_COL];
       let tables = [];
       //We group the same operations
       for (let i=0; i < trainStorage.length; i++) {

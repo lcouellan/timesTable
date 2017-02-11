@@ -10,7 +10,7 @@ var evaluation =
 				//we create the localStorage
 				initLocalStorage();
 			}
-			let exercisesDone = getLocalStorage().finishedTables.length;
+			let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
 
 			if (exercisesDone == 9)
 			{

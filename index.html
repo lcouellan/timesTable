@@ -63,6 +63,7 @@
 <!-- Template home page -->
 <script id="home" type="text/x-template">
 	<article>
+		<button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button>
 		<h1 class="header center">Choisis ton mode de jeu</h1>
 
 		<!-- Choice between learning mode / evaluation mode -->
@@ -106,8 +107,16 @@
 			<p class="center"><a :href="saveUri" download="timesTableSavegame.save" class="btn"><i class="material-icons left">cloud_download</i>télécharger ma sauvegarde</a></p>
 		</template>
 
-		<!-- Data import -->
+		<!-- Data import and profil management -->
 		<template v-else>
+			<h2 class="header center">Créer ma famille</h2>
+			<p class="center">Si tu es nouveau ou que tu n'as pas de sauvegarde, tu dois d'abord créer ton compte (c'est très simple) et ça permettra aux autres personnes de ta famille de jouer également.</p>
+			<form v-on:submit.prevent="createFamily($event)">
+				Prénom: <input type="text" name="fname" id="fname"><br>
+				Nom: <input type="text" name="lname" id="lname"><br>
+				<input type="submit" value="Envoyer">
+			</form>
+
 			<h2 class="header center">Restaurer ma partie:</h2>
 			<p class="center">Nous n'avons pas de partie enregistré sur cet ordinateur!<br/> Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
 			<div class="file-field input-field">
