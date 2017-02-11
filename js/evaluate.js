@@ -135,10 +135,14 @@ var evaluation =
 
 			// If response is correct go to the next operation
 			nextOperation: function () {
-
 				// Check there is more operations
 				if (storeEvaluation.index != storeEvaluation.operations.length - 1) {
 					storeEvaluation.operations[storeEvaluation.index] = storeEvaluation.currentOperation;
+					console.log(storeEvaluation.currentOperation.errors);
+					console.log(storeEvaluation.currentOperation.time);
+					if ( storeEvaluation.currentOperation.errors > 1 || storeEvaluation.currentOperation.time > 15) {
+						this.setOperationWithProblem();
+					}
 					storeEvaluation.currentOperation = storeEvaluation.operations[++storeEvaluation.index];
 					time.start = new Date().getTime() / 1000;
 				} else {
@@ -147,6 +151,15 @@ var evaluation =
 					//end of the game, we update the local storage
 					updateLocalStorage(LOCAL_EVALUATE_COL, storeEvaluation);
 				}
+			},
+			setOperationWithProblem() {
+				let place = Math.floor((Math.random() * (storeEvaluation.operations.length - storeEvaluation.index)));
+				storeEvaluation.currentOperation.time = 0;
+				storeEvaluation.currentOperation.errors = 0;
+				storeEvaluation.currentOperation.userChoices = [];
+				storeEvaluation.currentOperation.choices = this.generateChoices(storeEvaluation.currentOperation);
+				storeEvaluation.operations[storeEvaluation.index + place] = storeEvaluation.currentOperation;
+				console.log(place);
 			}
 		}
 	};

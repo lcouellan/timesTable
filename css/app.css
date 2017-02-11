@@ -30,6 +30,12 @@ body, p, li{
 	background-color: white;
 	color : rgba(238,110,115,0.7);
 }
+.text-green {
+	color: #4CAF50;
+}
+.text-red {
+	color: #F44336;
+}
 .btn:hover, .btn:focus{
 	background-color: white;
 	color: #ee6e73;

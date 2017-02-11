@@ -4,7 +4,7 @@ var home = {
     return storage
   },
   created: function () {
-   //destroyStorage(); //for testing the import of save
+   destroyStorage(); //for testing the import of save
     if (LOCAL_STORAGE_NAME in localStorage) {
       storage.storageExist = true;
       this.generateSaveHtmlLink();
@@ -33,12 +33,15 @@ var home = {
             //we store the save in the localStorage
             backUpStorageFromSave(save);
             storage.message = "Ta sauvegarde a bien été importée!";
+            storage.error = false;
           } else {
             storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
+            storage.error = true;
           }
         });
       } else {
         storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
+        storage.error = true;
       }
     },
     //async method using a FileReader to get content and return it with callback

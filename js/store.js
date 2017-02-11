@@ -20,6 +20,7 @@ var storeEvaluation =	{
 
 var storage = {
   storageExist : false,
+	error: false,
   saveUri : null,
   message : null
 };

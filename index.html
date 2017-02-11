@@ -65,11 +65,6 @@
 	<article>
 		<h1 class="header center">Choisis ton mode de jeu</h1>
 
-		<!-- Message with import saved datas -->
-		<template v-if="message">
-			<p>{{ message }}</p>
-		</template>
-
 		<!-- Choice between learning mode / evaluation mode -->
 		<div class="row">
 
@@ -124,6 +119,11 @@
 					<input class="file-path validate" type="text">
 				</div>
 			</div>
+			<!-- Message with import saved datas -->
+			<template v-if="message">
+				<p v-if = "error" class="text-red center">{{ message }}</p>
+				<p v-else class="text-green center">{{ message }}</p>
+			</template>
 		</template>
 	</article>
 </script>
