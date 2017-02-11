@@ -28,6 +28,18 @@ var profilManagement = {
         profils.message = "Vous devez saisir un prénom.";
       }
     },
+    deleteUser: function(name) {
+      if (getUsersName().length > 1) {
+        deleteProfil(name);
+        profils.activeUser = getActiveUserName();
+        profils.allUsers = getUsersName();
+        profils.message = "Le profil " + name + " a bien été supprimé!";
+      } else {
+        profils.message = "Si vous souhaitez supprimer le dernier profil veuillez utiliser Supprimer toutes les données ci-dessous";
+      }
+      
+
+    },
     wipeAllData: function() {
       destroyStorage();
       profils.activeUser = null;

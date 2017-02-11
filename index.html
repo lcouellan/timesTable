@@ -436,7 +436,9 @@
 
 			<h2 class="header center">Profils existant</h2>
 			<ul>
-				<li v-for="user in allUsers">{{ user }}</li>
+				<li v-for="user in allUsers">{{ user }}    -
+					<button v-on:click="deleteUser(user)" class="btn">Supprimer</button>
+				</li>
 			</ul>
 
 			<h2 class="header center">Ajouter un profil</h2>
@@ -444,6 +446,9 @@
 				Saisir un prénom: <input type="text" name="fname"><br>
 				<input type="submit" value="Envoyer">
 			</form>
+
+			<h2 class="header center">Supprimer la famille</h2>
+			<p class="center"><button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button></p>
 		</article>
 	</section>
 	<section v-else>

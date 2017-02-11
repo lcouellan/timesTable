@@ -86,6 +86,16 @@ function getActiveProfilIndex(storage) {
   }
 }
 
+//Return the index of a given profil
+//----------------------------------------------
+function getProfilIndex(storage, name) {
+  for (let i=0; i < storage.length; i++) {
+    if (storage[LOCAL_PROFILS_NAME][i][LOCAL_PROFIL_NAME] === name) {
+      return i;
+    }
+  }
+}
+
 //Return familyName
 //----------------------------------------------
 function getFamilyName() {
@@ -220,4 +230,14 @@ function setLocalStorage(storage) {
 //----------------------------------------------
 function destroyStorage() {
   localStorage.removeItem(LOCAL_STORAGE_NAME);
+}
+
+//Delete a given profil
+//----------------------------------------------
+function deleteProfil(name) {
+  let storage = getLocalStorage();
+  let index = getProfilIndex(storage, name);
+  storage[LOCAL_PROFILS_NAME].splice(index, 1);
+  storage[LOCAL_PROFIL_ACTIVE] = storage[LOCAL_PROFILS_NAME][0][LOCAL_PROFIL_NAME];
+  setLocalStorage(storage);
 }
