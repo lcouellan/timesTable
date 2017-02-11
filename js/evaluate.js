@@ -157,7 +157,6 @@ var evaluation =
 				storeEvaluation.currentOperation.userChoices = [];
 				storeEvaluation.currentOperation.choices = this.generateChoices(storeEvaluation.currentOperation);
 				storeEvaluation.operations[storeEvaluation.index + place] = storeEvaluation.currentOperation;
-				console.log(place);
 			}
 		}
 	};

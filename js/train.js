@@ -70,12 +70,12 @@ var learning = {
       storeTraining.table = tableNumber;
 
       //we generate and store each operations
-      for (m=1; m<=10; m++) {
+      for (m=1; m<11; m++) {
 
         //generation of the possible answers
         //needed to avoid compilation error of vueJs
         let choices = [];
-        for (c=1; c<=10; c++) {
+        for (c=1; c<11; c++) {
           choices[c-1] = tableNumber * c;
         }
         //we store the operation
