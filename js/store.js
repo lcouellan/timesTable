@@ -23,7 +23,8 @@ var storage = {
 	error: false,
   saveUri : null,
   message : null,
-  userList : null
+  activeUser : null,
+  allUsers : [],
 };
 
 var globalStatistics = {

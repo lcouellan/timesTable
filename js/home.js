@@ -7,11 +7,10 @@ var home = {
     if (localStorageExist()) {
       storage.storageExist = true;
       this.generateSaveHtmlLink();
-      this.activeUser = getActiveUserName();
-      this.allUsers = getUsersName();
+      storage.activeUser = getActiveUserName();
+      storage.allUsers = getUsersName();
     }
   },
-  props: ['activeUser', 'allUsers'],
   methods: {
     //we parse the localStorage in URI (the user can download it but we don't have to generate the file in the server)
     generateSaveHtmlLink: function () {
@@ -60,25 +59,20 @@ var home = {
         initProfilLocalStorage(lastName, firstName);
         storage.message = "Ton profil et famille ont bien été créés!";
         storage.storageExist = true;
-        this.activeUser = firstName;
-        this.allUsers = lastName;
+        storage.activeUser = firstName;
       } else {
         storage.message = "Tu dois indiquer ton nom et ton prénom!";
       }
     },
     changeActiveUser: function(user) {
       setActiveProfil(user);
-      this.activeUser(user);
+      storage.activeUser = user;
     },
     wipeAllData: function() {
       destroyStorage();
       storage.message = "Données correctement supprimées";
       storage.storageExist = false;
       this.activeUser = null;
-    },
-    refresh: function() {
-      this.activeUser = getActiveUserName();
-      this.allUsers = getUsersName();
     }
   }
 };

@@ -63,10 +63,7 @@
 
 <!-- Template home page -->
 <script id="home" type="text/x-template">
-	<article>
-		{{ refresh() }}
-		<button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button>
-		
+	<article>		
 		<!-- Change profile -->
 		<template v-if="activeUser != null && allUsers.length > 1">
 			<span v-for="user in allUsers">
@@ -74,10 +71,11 @@
 				<button v-else class="btn" v-on:click="changeActiveUser(user)">{{ user }}</button>
 			</span>
 		</template>
-		<h1 class="header center">Choisis ton mode de jeu {{ activeUser }}</h1>
+		<h1 class="header center" v-if="activeUser != null">Choisis ton mode de jeu {{ activeUser }}</h1>
+		<h1 class="header center" v-else>Bienvenu dans MultiTable!</h1>
 
 		<!-- Choice between learning mode / evaluation mode -->
-		<div class="row">
+		<div class="row" v-if="activeUser != null">
 
 			<!-- Training mode -->
 			<div class="col s6 m6">
@@ -115,6 +113,9 @@
 			<h2 class="header center">Sauvegarder ma partie:</h2>
 			<p class="center">Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: </p>
 			<p class="center"><a :href="saveUri" download="timesTableSavegame.save" class="btn"><i class="material-icons left">cloud_download</i>télécharger ma sauvegarde</a></p>
+			
+			<h2 class="header center">Supprimer toutes mes données:</h2>
+			<p class="center"><button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button></p>
 		</template>
 
 		<!-- Data import and profil management -->
