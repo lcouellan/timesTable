@@ -3,7 +3,8 @@ const router = new VueRouter({
 		{ path: "/", component: home },
 		{ path: "/apprentissage", component: learning, name: "learning" },
 		{ path: "/evaluation", component: evaluation, name: "evaluation"},
-		{ path: "/statistiques", component: statistics, name: "statistics" }
+		{ path: "/statistiques", component: statistics, name: "statistics" },
+		{ path: "/profils", component: profilManagement, name: "profilManagement" }
 	]
 });
 

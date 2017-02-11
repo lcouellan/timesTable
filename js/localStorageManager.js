@@ -86,6 +86,41 @@ function getActiveProfilIndex(storage) {
   }
 }
 
+//Return familyName
+//----------------------------------------------
+function getFamilyName() {
+  return getLocalStorage()[LOCAL_FAMILY_NAME];
+}
+
+//Return name of the active user
+//----------------------------------------------
+function getActiveUserName() {
+  return getLocalStorage()[LOCAL_PROFIL_ACTIVE];
+}
+
+//Return the list of the users
+//----------------------------------------------
+function getUsersName() {
+  let storage = getLocalStorage();
+  let users = [];
+  for (let i=0; i < storage[LOCAL_PROFILS_NAME].length; i++) {
+    users.push(storage[LOCAL_PROFILS_NAME][i][LOCAL_PROFIL_NAME]);
+  }
+  return users;
+}
+
+//Check if a username already exist
+//----------------------------------------------
+function checkIfUserExist(user) {
+  let users = getUsersName();
+  for (let i=0; i < users.length; i++) {
+    if(users[i] == user) {
+      return true;
+    }
+  }
+  return false;
+}
+
 //Return the full local storage (with all users)
 //----------------------------------------------
 function getLocalStorage() {

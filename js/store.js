@@ -22,7 +22,8 @@ var storage = {
   storageExist : false,
 	error: false,
   saveUri : null,
-  message : null
+  message : null,
+  userList : null
 };
 
 var globalStatistics = {
@@ -31,4 +32,11 @@ var globalStatistics = {
   evaluateExist : false,
   displayTrain : false,
   displayEvaluate : false
+};
+
+var profils = {
+  family : null,
+  activeUser : null,
+  allUsers : [],
+  message : null
 };

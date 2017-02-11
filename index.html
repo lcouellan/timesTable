@@ -53,6 +53,7 @@
 				© 2017 DNR2I
 				<router-link to="/" class="grey-text text-lighten-4 right">Retour à l'accueil</router-link>
 				<router-link to="/statistiques" class="grey-text text-lighten-4 right">Voir mes statistiques</router-link>
+				<router-link to="/profils" class="grey-text text-lighten-4 right">Gérer les profils</router-link>
 			</div>
 		</div>
 	</footer>
@@ -63,8 +64,17 @@
 <!-- Template home page -->
 <script id="home" type="text/x-template">
 	<article>
+		{{ refresh() }}
 		<button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button>
-		<h1 class="header center">Choisis ton mode de jeu</h1>
+		
+		<!-- Change profile -->
+		<template v-if="activeUser != null && allUsers.length > 1">
+			<span v-for="user in allUsers">
+				<button v-if="user == activeUser" class="btn red">{{ user }}</button>
+				<button v-else class="btn" v-on:click="changeActiveUser(user)">{{ user }}</button>
+			</span>
+		</template>
+		<h1 class="header center">Choisis ton mode de jeu {{ activeUser }}</h1>
 
 		<!-- Choice between learning mode / evaluation mode -->
 		<div class="row">
@@ -371,6 +381,31 @@
 	</section>
 </script>
 
+<!-- Template profilManagement page -->
+<script id="profilManagement" type="text/x-template">
+	<article>
+		<div v-if="activeUser == null">
+			<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
+		</div>
+		<div v-else>
+			<h1>Gestion des profils de la famille {{ family }}</h1>
+			
+			<p v-if="message != null">{{ message }}</p>
+
+			<h2 class="header center">Profils existant</h2>
+			<ul>
+				<li v-for="user in allUsers">{{ user }}</li>
+			</ul>
+
+			<h2 class="header center">Ajouter un profil</h2>
+			<form v-on:submit.prevent="addActiveUser($event)">
+				Saisir un prénom: <input type="text" name="fname"><br>
+				<input type="submit" value="Envoyer">
+			</form>
+		</div>
+	</article>
+</script>
+
 <!-- External libs -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="js/lib/jquery/dist/jquery.min.js"></script>
@@ -385,6 +420,7 @@
 <script src="js/evaluate.js"></script>
 <script src="js/train.js"></script>
 <script src="js/statistics.js"></script>
+<script src="js/profilManagement.js"></script>
 <script src="js/router.js"></script>
 </body>
 </html>
