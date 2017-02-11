@@ -5,6 +5,7 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
+			storeEvaluation.operations = [];
 			if(!localStorageExist()) {
 				//we create the localStorage
 				initLocalStorage();
@@ -143,8 +144,8 @@ var evaluation =
 				} else {
 					storeEvaluation.index ++;
 					storeEvaluation.currentOperation = 0;
-                    //end of the game, we update the local storage
-                    updateLocalStorage(LOCAL_EVALUATE_COL, storeEvaluation);
+					//end of the game, we update the local storage
+					updateLocalStorage(LOCAL_EVALUATE_COL, storeEvaluation);
 				}
 			}
 		}
