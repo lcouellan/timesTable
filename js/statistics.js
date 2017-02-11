@@ -4,6 +4,9 @@ var statistics = {
     return globalStatistics
   },
   created: function() {
+    globalStatistics.statistics = [];
+    globalStatistics.displayTrain = false;
+    globalStatistics.displayEvaluate = false;
     globalStatistics.trainExist = localStorageTrainExist() ? true : false;
     globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
   },
@@ -106,6 +109,7 @@ var statistics = {
           stats.errors.splice(index, 1);
         }
         stats.averageTime = stats.averageTime / stats.nb;
+
         if (stats.averageError != 0) {
           stats.averageError = stats.averageError / stats.nb;
         }
@@ -120,7 +124,6 @@ var statistics = {
       globalStatistics.displayEvaluate = false;
       globalStatistics.statistics = [];
       let trainStorage = getLocalStorage()[LOCAL_TRAIN_COL];
-
       let tables = [];
       //We group the same operations
       for (let i=0; i < trainStorage.length; i++) {
@@ -179,28 +182,28 @@ var statistics = {
               for (let y=0; y < tables[i].game[j][z].userChoices.length; y++) { //we loop on each operations error
                 let error = tables[i].game[j][z].userChoices[y];
                 if (stats.stat[index].errors.indexOf(error) === -1) {
-                  
                   stats.stat[index].errors.push(error);
                 }
               }
             }
           }
+        }
+
+        //Then we clean the result and do the stats:
+        for (let z=0; z < stats.stat.length; z++) {
+          let result = stats.stat[z].multiplier * stats.table;
+          let index = stats.stat[z].errors.indexOf(result);
           
-          //Then we clean the result and do the stats:
-          for (let z=0; z < stats.stat.length; z++) {
-            let result = stats.stat[z].multiplier * stats.table;
-            let index = stats.stat[z].errors.indexOf(result);
-            
-            if (index != -1) {
-              stats.stat[z].errors.splice(index, 1);
-            }
-            
-            stats.stat[z].averageTime = stats.stat[z].averageTime / stats.nb;
-            if (stats.stat[z].averageError != 0) {
-              stats.stat[z].averageError = stats.stat[z].averageError / stats.nb;
-            } 
+          if (index != -1) {
+            stats.stat[z].errors.splice(index, 1);
+          }
+          
+          stats.stat[z].averageTime = stats.stat[z].averageTime / stats.nb;
+          if (stats.stat[z].averageError != 0) {
+            stats.stat[z].averageError = stats.stat[z].averageError / stats.nb;
           } 
         }
+
         //we store the global training statistics
         globalStatistics.statistics.push(stats);
       }
