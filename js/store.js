@@ -3,7 +3,8 @@ var storeTraining = {
   round : 0,
 	tablesDone : [],
   operations : [],
-  userChoices : []
+  userChoices : [],
+  activeUser : null,
 };
 
 var time = {
@@ -15,14 +16,17 @@ var storeEvaluation =	{
 	trainingDone : false,
 	index : 0,
 	operations: [],
-	currentOperation : 0
+	currentOperation : 0,
+  activeUser : null,
 };
 
 var storage = {
   storageExist : false,
 	error: false,
   saveUri : null,
-  message : null
+  message : null,
+  activeUser : null,
+  allUsers : []
 };
 
 var globalStatistics = {
@@ -30,5 +34,13 @@ var globalStatistics = {
   trainExist : false,
   evaluateExist : false,
   displayTrain : false,
-  displayEvaluate : false
+  displayEvaluate : false,
+  activeUser : null,
+};
+
+var profils = {
+  family : null,
+  activeUser : null,
+  allUsers : [],
+  message : null
 };

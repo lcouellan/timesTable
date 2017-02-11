@@ -53,6 +53,7 @@
 				© 2017 DNR2I
 				<router-link to="/" class="grey-text text-lighten-4 right">Retour à l'accueil</router-link>
 				<router-link to="/statistiques" class="grey-text text-lighten-4 right">Voir mes statistiques</router-link>
+				<router-link to="/profils" class="grey-text text-lighten-4 right">Gérer les profils</router-link>
 			</div>
 		</div>
 	</footer>
@@ -62,11 +63,21 @@
 
 <!-- Template home page -->
 <script id="home" type="text/x-template">
-	<article>
-		<h1 class="header center">Choisis ton mode de jeu</h1>
+	<article>		
+		<!-- Change profile -->
+		<template v-if="activeUser != null && allUsers.length > 1">
+			<h2 class="header center">Selectionnes ton profil!</h2>
+			<p>Le profil en rouge est celui qui est actuellement selectionné.</p>
+			<span v-for="user in allUsers">
+				<button v-if="user == activeUser" class="btn red">{{ user }}</button>
+				<button v-else class="btn" v-on:click="changeActiveUser(user)">{{ user }}</button>
+			</span>
+		</template>
+		<h1 class="header center" v-if="activeUser != null">Choisis ton mode de jeu {{ activeUser }}</h1>
+		<h1 class="header center" v-else>Bienvenu dans MultiTable!</h1>
 
 		<!-- Choice between learning mode / evaluation mode -->
-		<div class="row">
+		<div class="row" v-if="activeUser != null">
 
 			<!-- Training mode -->
 			<div class="col s6 m6">
@@ -104,10 +115,21 @@
 			<h2 class="header center">Sauvegarder ma partie:</h2>
 			<p class="center">Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: </p>
 			<p class="center"><a :href="saveUri" download="timesTableSavegame.save" class="btn"><i class="material-icons left">cloud_download</i>télécharger ma sauvegarde</a></p>
+			
+			<h2 class="header center">Supprimer toutes mes données:</h2>
+			<p class="center"><button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button></p>
 		</template>
 
-		<!-- Data import -->
+		<!-- Data import and profil management -->
 		<template v-else>
+			<h2 class="header center">Créer ma famille</h2>
+			<p class="center">Si tu es nouveau ou que tu n'as pas de sauvegarde, tu dois d'abord créer ton compte (c'est très simple) et ça permettra aux autres personnes de ta famille de jouer également.</p>
+			<form v-on:submit.prevent="createFamily($event)">
+				Prénom: <input type="text" name="fname" id="fname"><br>
+				Nom: <input type="text" name="lname" id="lname"><br>
+				<input type="submit" value="Envoyer">
+			</form>
+
 			<h2 class="header center">Restaurer ma partie:</h2>
 			<p class="center">Nous n'avons pas de partie enregistré sur cet ordinateur!<br/> Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
 			<div class="file-field input-field">
@@ -130,7 +152,7 @@
 
 <!-- Template learning mode -->
 <script id="learning" type="text/x-template">
-	<section>
+	<section v-if="activeUser != null">
 
 		<!-- Table choice -->
 		<article id="content-learning">
@@ -142,7 +164,7 @@
 				</div>
 				<div class="card-tabs">
 					<ul class="tabs tabs-fixed-width">
-						<li v-for="n in 9" class="tab">
+						<li v-for="n in 10" class="tab">
 							<a v-if="table == n" class="selected">{{ n }}</a>
 							<a v-else v-on:click="play(n)">{{ n }}</a>
 						</li>
@@ -197,85 +219,115 @@
 			</article>
 		</template>
 	</section>
-</script>
-
-<!-- Template evaluation mode -->
-<script id="evaluation" type="text/x-template">
-
-	<!-- Check if the user had done the training mode -->
-	<div v-if="!trainingDone">
-		<h1 class="header center">Mode évaluation</h1>
+	<section v-else>
+		<h1 class="header center">Mode apprentissage</h1>
 		<article id="content-check-training">
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
-					<p>Avant de pouvoir faire le mode évaluation, finis d'abord le mode apprentissage.</p>
-					<p>Pour cela, tu dois finir chaque table de multiplication.</p>
+					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
 				</div>
 				<div class="card-action white">
-					<router-link to="/apprentissage">
-						Commencer l'entraînement
+					<router-link to="/">
+						Retour à l'accueil
 					</router-link>
 				</div>
 			</div>
 		</article>
-	</div>
-	<div v-else>
+	</section>
+</script>
 
-		<!-- Check there is still operations left -->
-		<div v-if="index < operations.length">
+<!-- Template evaluation mode -->
+<script id="evaluation" type="text/x-template">
+	<section v-if="activeUser != null">
+		<!-- Check if the user had done the training mode -->
+		<div v-if="!trainingDone">
 			<h1 class="header center">Mode évaluation</h1>
-
-			<!-- Operation view -->
-			<article class="content-operation">
-				<p class="text-tour">Opération {{ index+1 }} sur 10</p>
-				<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
-				<p>Choisi la bonne réponse:</p>
-				<div class="answers">
-				<span v-for="choice in currentOperation.choices">
-					<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
-					<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
-				</span>
+			<article id="content-check-training">
+				<div class="card deep-purple lighten-2">
+					<div class="card-content" deep-purple lighten-4>
+						<p>Avant de pouvoir faire le mode évaluation, finis d'abord le mode apprentissage.</p>
+						<p>Pour cela, tu dois finir chaque table de multiplication.</p>
+					</div>
+					<div class="card-action white">
+						<router-link to="/apprentissage">
+							Commencer l'entraînement
+						</router-link>
+					</div>
 				</div>
 			</article>
 		</div>
-
-		<!-- User stats -->
 		<div v-else>
-			<h1 class="header center">Résultats de l'évaluation</h1>
-			<table class="bordered highlight table-score">
-				<thead>
-				<tr>
-					<th data-field="operation">Opération</th>
-					<th data-field="result">Résultat</th>
-					<th data-field="errors">Nombre d'erreurs</th>
-					<th deta-field="answers">Réponses données</th>
-					<th data-field="timer">Temps (en s)</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr v-for="operation in operations">
-					<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
-					<td>{{ operation.result }}</td>
-					<td>
-						<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
-						<span v-else class="mistakes">{{ operation.errors }}</span>
-					</td>
-					<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
-					<td>{{ operation.time }}</td>
-				</tr>
-				</tbody>
-			</table>
+
+			<!-- Check there is still operations left -->
+			<div v-if="index < operations.length">
+				<h1 class="header center">Mode évaluation</h1>
+
+				<!-- Operation view -->
+				<article class="content-operation">
+					<p class="text-tour">Opération {{ index+1 }} sur 10</p>
+					<h3 class="center">{{ currentOperation.multiplier1 }} x {{ currentOperation.multiplier2 }} =</h3>
+					<p>Choisi la bonne réponse:</p>
+					<div class="answers">
+					<span v-for="choice in currentOperation.choices">
+						<button v-if="operations[index].userChoices.indexOf(choice) >= 0" class="btn red">{{ choice }}</button>
+						<button v-else class="btn" v-on:click="checkResult(choice,currentOperation)">{{ choice }}</button>
+					</span>
+					</div>
+				</article>
+			</div>
+
+			<!-- User stats -->
+			<div v-else>
+				<h1 class="header center">Résultats de l'évaluation</h1>
+				<table class="bordered highlight table-score">
+					<thead>
+					<tr>
+						<th data-field="operation">Opération</th>
+						<th data-field="result">Résultat</th>
+						<th data-field="errors">Nombre d'erreurs</th>
+						<th deta-field="answers">Réponses données</th>
+						<th data-field="timer">Temps (en s)</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="operation in operations">
+						<td>{{ operation.multiplier1 }} x {{ operation.multiplier2 }}</td>
+						<td>{{ operation.result }}</td>
+						<td>
+							<span v-if="operation.errors == 0" class="no-mistakes">Pas d'erreurs</span>
+							<span v-else class="mistakes">{{ operation.errors }}</span>
+						</td>
+						<td><span v-for="userChoice in operation.userChoices">{{ userChoice }} </span></td>
+						<td>{{ operation.time }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+	</section>
+	<section v-else>
+		<h1 class="header center">Mode évaluation</h1>
+		<article id="content-check-training">
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
+				</div>
+				<div class="card-action white">
+					<router-link to="/">
+						Retour à l'accueil
+					</router-link>
+				</div>
+			</div>
+		</article>
+	</section>
 </script>
 
 <!-- Template global statistic -->
 <script id="statistics" type="text/x-template">
-	<section>
-
+	<section v-if="activeUser != null">
 		<!-- Mode statistics choice -->
 		<article id="content-stats">
-			<h1 class="header center">Statistiques globales</h1>
+			<h1 class="header center">Statistiques globales de {{ activeUser }}</h1>
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Ici tu peux voir tes statistiques globales sur le mode de ton choix afin de repérer les opérations/tables qui te posent problème</p>
@@ -360,6 +412,62 @@
 			</article>
 		</template>
 	</section>
+	<section v-else>
+		<h1 class="header center">Voir mes statistiques</h1>
+		<article id="content-check-training">
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
+				</div>
+				<div class="card-action white">
+					<router-link to="/">
+						Retour à l'accueil
+					</router-link>
+				</div>
+			</div>
+		</article>
+	</section>
+</script>
+
+<!-- Template profilManagement page -->
+<script id="profilManagement" type="text/x-template">
+	<section v-if="activeUser != null">
+		<article>
+			<h1>Gestion des profils de la famille {{ family }}</h1>
+			<p v-if="message != null">{{ message }}</p>
+
+			<h2 class="header center">Profils existant</h2>
+			<ul>
+				<li v-for="user in allUsers">{{ user }}    -
+					<button v-on:click="deleteUser(user)" class="btn">Supprimer</button>
+				</li>
+			</ul>
+
+			<h2 class="header center">Ajouter un profil</h2>
+			<form v-on:submit.prevent="addActiveUser($event)">
+				Saisir un prénom: <input type="text" name="fname"><br>
+				<input type="submit" value="Envoyer">
+			</form>
+
+			<h2 class="header center">Supprimer la famille</h2>
+			<p class="center"><button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button></p>
+		</article>
+	</section>
+	<section v-else>
+		<h1 class="header center">Gestion des profils</h1>
+		<article id="content-check-training">
+			<div class="card deep-purple lighten-2">
+				<div class="card-content" deep-purple lighten-4>
+					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
+				</div>
+				<div class="card-action white">
+					<router-link to="/">
+						Retour à l'accueil
+					</router-link>
+				</div>
+			</div>
+		</article>
+	</section>		
 </script>
 
 <!-- External libs -->
@@ -376,6 +484,7 @@
 <script src="js/evaluate.js"></script>
 <script src="js/train.js"></script>
 <script src="js/statistics.js"></script>
+<script src="js/profilManagement.js"></script>
 <script src="js/router.js"></script>
 </body>
 </html>

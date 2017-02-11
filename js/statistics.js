@@ -4,11 +4,14 @@ var statistics = {
     return globalStatistics
   },
   created: function() {
-    globalStatistics.statistics = [];
-    globalStatistics.displayTrain = false;
-    globalStatistics.displayEvaluate = false;
-    globalStatistics.trainExist = localStorageTrainExist() ? true : false;
-    globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
+    if (localStorageExist()) {
+      globalStatistics.statistics = [];
+      globalStatistics.displayTrain = false;
+      globalStatistics.displayEvaluate = false;
+      globalStatistics.trainExist = localStorageTrainExist() ? true : false;
+      globalStatistics.evaluateExist = localStorageEvaluateExist() ? true : false;
+      globalStatistics.activeUser = getActiveUserName();
+    }
   },
   methods: {
     //prepare the evaluate data for the generation of statistic (group)
@@ -16,7 +19,7 @@ var statistics = {
       globalStatistics.displayEvaluate = true;
       globalStatistics.displayTrain = false;
       globalStatistics.statistics = [];
-      let evStorage = getLocalStorage()[LOCAL_EVALUATE_COL];
+      let evStorage = getUserActiveLocalStorage()[LOCAL_EVALUATE_COL];
       let evStorages = [];
       for (let i=0; i < evStorage.length; i++) {
         if (i===0) {
@@ -123,7 +126,7 @@ var statistics = {
       globalStatistics.displayTrain = true;
       globalStatistics.displayEvaluate = false;
       globalStatistics.statistics = [];
-      let trainStorage = getLocalStorage()[LOCAL_TRAIN_COL];
+      let trainStorage = getUserActiveLocalStorage()[LOCAL_TRAIN_COL];
       let tables = [];
       //We group the same operations
       for (let i=0; i < trainStorage.length; i++) {

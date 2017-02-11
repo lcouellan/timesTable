@@ -5,40 +5,40 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
-			storeEvaluation.operations = [];
-			if(!localStorageExist()) {
-				//we create the localStorage
-				initLocalStorage();
-			}
-			let exercisesDone = getLocalStorage().finishedTables.length;
+			if (localStorageExist()) {
+				storeEvaluation.activeUser = getActiveUserName();
+				storeEvaluation.operations = [];
+				
+				let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
 
-			if (exercisesDone == 9)
-			{
-				storeEvaluation.trainingDone = true;
-				// Create 10 multiplications for Evaluation Mode
-				for (let i = 0; i < 10; i++) {
-					let operation = {
-						multiplier1 : 0,
-						multiplier2 : 0,
-						result : 0,
-						choices : [],
-						errors : 0,
-						userChoices : [],
-						time : 0
-					};
+				if (exercisesDone == 9)
+				{
+					storeEvaluation.trainingDone = true;
+					// Create 10 multiplications for Evaluation Mode
+					for (let i = 0; i < 10; i++) {
+						let operation = {
+							multiplier1 : 0,
+							multiplier2 : 0,
+							result : 0,
+							choices : [],
+							errors : 0,
+							userChoices : [],
+							time : 0
+						};
 
-					// Save operation
-					operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
-					operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
-					operation.result = operation.multiplier1 * operation.multiplier2;
-					operation.choices = this.generateChoices(operation);
-					storeEvaluation.operations.push(operation);
+						// Save operation
+						operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+						operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+						operation.result = operation.multiplier1 * operation.multiplier2;
+						operation.choices = this.generateChoices(operation);
+						storeEvaluation.operations.push(operation);
+					}
+
+					// Get the current operation
+					storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
+					//start and store the start in seconds
+					time.start = new Date().getTime() / 1000;
 				}
-
-				// Get the current operation
-				storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
-				//start and store the start in seconds
-				time.start = new Date().getTime() / 1000;
 			}
 		},
 		methods: {
@@ -138,8 +138,6 @@ var evaluation =
 				// Check there is more operations
 				if (storeEvaluation.index != storeEvaluation.operations.length - 1) {
 					storeEvaluation.operations[storeEvaluation.index] = storeEvaluation.currentOperation;
-					console.log(storeEvaluation.currentOperation.errors);
-					console.log(storeEvaluation.currentOperation.time);
 					if ( storeEvaluation.currentOperation.errors > 1 || storeEvaluation.currentOperation.time > 15) {
 						this.setOperationWithProblem();
 					}
@@ -159,7 +157,6 @@ var evaluation =
 				storeEvaluation.currentOperation.userChoices = [];
 				storeEvaluation.currentOperation.choices = this.generateChoices(storeEvaluation.currentOperation);
 				storeEvaluation.operations[storeEvaluation.index + place] = storeEvaluation.currentOperation;
-				console.log(place);
 			}
 		}
 	};

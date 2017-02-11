@@ -4,7 +4,10 @@ var learning = {
     return storeTraining
   },
 	created: function () {
-		storeTraining.tablesDone = this.getTablesDone();
+    if (localStorageExist()) {
+		  storeTraining.tablesDone = this.getTablesDone();
+      storeTraining.activeUser = getActiveUserName();
+    }
 	},
   methods: {
     //-----------------------------------
@@ -67,12 +70,12 @@ var learning = {
       storeTraining.table = tableNumber;
 
       //we generate and store each operations
-      for (m=1; m<=10; m++) {
+      for (m=1; m<11; m++) {
 
         //generation of the possible answers
         //needed to avoid compilation error of vueJs
         let choices = [];
-        for (c=1; c<=10; c++) {
+        for (c=1; c<11; c++) {
           choices[c-1] = tableNumber * c;
         }
         //we store the operation
@@ -107,7 +110,7 @@ var learning = {
 			  //we create the localStorage
 			  initLocalStorage();
 		  }
-		  let exercicesDone = getLocalStorage().train;
+		  let exercicesDone = getUserActiveLocalStorage().train;
 		  let done = false;
 		  for(let i = 0; i < exercicesDone.length; i++) {
 			  if ( storeTraining.table == exercicesDone[i].table) {
@@ -120,11 +123,7 @@ var learning = {
 		  }
 	  },
 	  getTablesDone: function () {
-		  if(!localStorageExist()) {
-			  //we create the localStorage
-			  initLocalStorage();
-		  }
-		  return getLocalStorage().finishedTables;
+		  return getUserActiveLocalStorage()[LOCAL_FINISH_COL];
 	  },
 	  isDone: function (tableNumber) {
 		  return storeTraining.tablesDone.includes(tableNumber);

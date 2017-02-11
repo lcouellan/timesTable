@@ -4,10 +4,11 @@ var home = {
     return storage
   },
   created: function () {
-   destroyStorage(); //for testing the import of save
-    if (LOCAL_STORAGE_NAME in localStorage) {
+    if (localStorageExist()) {
       storage.storageExist = true;
       this.generateSaveHtmlLink();
+      storage.activeUser = getActiveUserName();
+      storage.allUsers = getUsersName();
     }
   },
   methods: {
@@ -29,11 +30,13 @@ var home = {
           let content = e.target.result;
           let save = JSON.parse(content);
           //we check if the object is properly build
-          if (save[LOCAL_EVALUATE_COL] && save[LOCAL_TRAIN_COL]) {
+          if (save[LOCAL_PROFILS_NAME] && save[LOCAL_PROFIL_ACTIVE]) {
             //we store the save in the localStorage
             backUpStorageFromSave(save);
             storage.message = "Ta sauvegarde a bien été importée!";
             storage.error = false;
+            storage.activeUser = getActiveUserName();
+            storage.allUsers = getUsersName();
           } else {
             storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
             storage.error = true;
@@ -49,6 +52,33 @@ var home = {
       var reader = new FileReader();
       reader.onload = onLoadCallback;
       reader.readAsText(file);
+    },
+    //method use for create a new family and the default user
+    createFamily: function(event) {
+      let firstName = event.target[0].value;
+      let lastName = event.target[1].value;
+
+      if (firstName && lastName) {
+        initProfilLocalStorage(lastName, firstName);
+        storage.message = "Ton profil et famille ont bien été créés!";
+        storage.storageExist = true;
+        storage.activeUser = firstName;
+      } else {
+        storage.message = "Tu dois indiquer ton nom et ton prénom!";
+      }
+    },
+    //method use for changing the active user when there is multiple profil
+    changeActiveUser: function(user) {
+      setActiveProfil(user);
+      storage.activeUser = user;
+    },
+    //method use for wipe all data
+    wipeAllData: function() {
+      destroyStorage();
+      storage.message = "Données correctement supprimées";
+      storage.storageExist = false;
+      storage.activeUser = null;
+      storage.allUsers = null;
     }
   }
 };
