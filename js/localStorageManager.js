@@ -17,7 +17,7 @@ function destroyStorage() {
 
 //when called this function store the result from the store to local storage
 function updateLocalStorage(type, content) {
-  if(!(LOCAL_STORAGE_NAME in localStorage)) {
+  if(!localStorageExist()) {
     //we create the localStorage
     initLocalStorage();
   } 
@@ -33,7 +33,7 @@ function updateLocalStorage(type, content) {
 
 //override the localStorage with a save
 function backUpStorageFromSave(save) {
-  if(!(LOCAL_STORAGE_NAME in localStorage)) {
+  if(!localStorageExist()) {
     //we create the localStorage
     initLocalStorage();
   }
@@ -42,4 +42,28 @@ function backUpStorageFromSave(save) {
 
 function getLocalStorage() {
   return JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+}
+
+function localStorageExist() {
+  return LOCAL_STORAGE_NAME in localStorage ? true : false;
+}
+
+function localStorageEvaluateExist() {
+  if (localStorageExist()) {
+    let storage = getLocalStorage();
+    if (storage[LOCAL_EVALUATE_COL]) {
+      return storage[LOCAL_EVALUATE_COL].length > 0 ? true : false;
+    }
+  }
+  return false;
+}
+
+function localStorageTrainExist() {
+  if (localStorageExist()) {
+    let storage = getLocalStorage();
+    if (storage[LOCAL_TRAIN_COL]) {
+      return storage[LOCAL_TRAIN_COL].length > 0 ? true : false;
+    }
+  }
+  return false;
 }
