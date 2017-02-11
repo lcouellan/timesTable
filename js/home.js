@@ -4,7 +4,7 @@ var home = {
     return storage
   },
   created: function () {
-    // destroyStorage(); //for testing the import of save
+   //destroyStorage(); //for testing the import of save
     if (LOCAL_STORAGE_NAME in localStorage) {
       storage.storageExist = true;
       this.generateSaveHtmlLink();
