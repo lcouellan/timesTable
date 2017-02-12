@@ -37,14 +37,6 @@ var profilManagement = {
       } else {
         profils.message = "Si vous souhaitez supprimer le dernier profil veuillez utiliser Supprimer toutes les données ci-dessous";
       }
-      
-
-    },
-    wipeAllData: function() {
-      destroyStorage();
-      profils.activeUser = null;
-      profils.allUsers = null;
-      profils.family = null;
     }
   }
 };
