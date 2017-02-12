@@ -37,14 +37,17 @@ var home = {
             storage.error = false;
             storage.activeUser = getActiveUserName();
             storage.allUsers = getUsersName();
+            storage.storageExist = true;
           } else {
             storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
             storage.error = true;
+            storage.storageExist = false;
           }
         });
       } else {
         storage.message = "Ta sauvegarde n'a pas été importée, es-tu sûr d'avoir choisi le bon fichier?";
         storage.error = true;
+        storage.storageExist = false;
       }
     },
     //async method using a FileReader to get content and return it with callback
@@ -63,6 +66,7 @@ var home = {
         storage.message = "Ton profil et famille ont bien été créés!";
         storage.storageExist = true;
         storage.activeUser = firstName;
+        storage.allUsers = getUsersName;
       } else {
         storage.message = "Tu dois indiquer ton nom et ton prénom!";
       }
