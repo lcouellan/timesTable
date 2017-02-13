@@ -6,6 +6,54 @@ var evaluation =
 		},
 		created: function(){
 			this.init();
+			if (localStorageExist()) {
+				storeEvaluation.activeUser = getActiveUserName();
+				storeEvaluation.operations = [];
+				
+				let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
+
+				if (exercisesDone == 10)
+				{
+					storeEvaluation.trainingDone = true;
+					// Create 10 multiplications for Evaluation Mode
+					for (let i = 0; i < 10; i++) {
+						let operation = {
+							multiplier1 : 0,
+							multiplier2 : 0,
+							result : 0,
+							choices : [],
+							errors : 0,
+							userChoices : [],
+							time : 0
+						};
+
+						// Save operation
+
+						// We reduce the probability of getting operator 1 or 10 (because they are easy) of 75% randomly
+						if (Math.floor((Math.random() * 2)) == 0) {
+							operation.multiplier1 = this.randomWithRange(2, 9);
+							operation.multiplier2 = this.randomWithRange(2, 9);
+						} else {
+							if (Math.floor((Math.random() * 2)) == 0) {
+								operation.multiplier1 = this.randomWithRange(1, 10);
+								operation.multiplier2 = this.randomWithRange(2, 9);
+							} else {
+								operation.multiplier1 = this.randomWithRange(2, 9);
+								operation.multiplier2 = this.randomWithRange(1, 10);
+							}
+						}
+						
+						operation.result = operation.multiplier1 * operation.multiplier2;
+						operation.choices = this.generateChoices(operation);
+						storeEvaluation.operations.push(operation);
+					}
+
+					// Get the current operation
+					storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
+					//start and store the start in seconds
+					time.start = new Date().getTime() / 1000;
+				}
+			}
 		},
 		methods: {
 			init : function () {
@@ -56,7 +104,7 @@ var evaluation =
 					let choice;
 					do {
 						choice = this.generateBadChoice(operation);
-					} while (choice == operation.result || choices.indexOf(choice) >= 0 || choice < 0)
+					} while (choice == operation.result || choices.indexOf(choice) >= 0 || choice <= 0)
 					choices.push(choice);
 				}
 
@@ -70,19 +118,21 @@ var evaluation =
 			generateBadChoice: function (operation) {
 
 				// Create a random number deciding which bad result compute
-				let random = Math.floor((Math.random() * 3) + 1);
+				// where min is the first case statement
+				// where max is the last case statement
+				let random = this.randomWithRange(1, 6);
 
 				let badChoice = 0;
 				switch(random) {
 					case 1 :
 
 						// Bad choice 1 : Return a number between -5 and +5 of the result
-						badChoice = Math.floor((Math.random() * (operation.result + 5 - operation.result - 5 + 1)) + operation.result - 5);
+						badChoice = this.randomWithRange(operation.result - 5, operation.result + 5);
 						break;
 					case 2 :
 
 						// Bad choice 2 : Return a number in the the same multiplication table of the result
-						badChoice = operation.multiplier1 * Math.floor((Math.random() * 10) + 1);
+						badChoice = operation.multiplier1 * this.randomWithRange(1, 10);
 						break;
 					case 3 :
 
@@ -155,12 +205,26 @@ var evaluation =
 				}
 			},
 			setOperationWithProblem() {
-				let place = Math.floor((Math.random() * (storeEvaluation.operations.length - storeEvaluation.index)));
-				storeEvaluation.currentOperation.time = 0;
-				storeEvaluation.currentOperation.errors = 0;
-				storeEvaluation.currentOperation.userChoices = [];
-				storeEvaluation.currentOperation.choices = this.generateChoices(storeEvaluation.currentOperation);
-				storeEvaluation.operations[storeEvaluation.index + place] = storeEvaluation.currentOperation;
+				//we add the operation only if there is at least 2 turn left
+				if (storeEvaluation.index + 2 < storeEvaluation.operations.length) {
+					let min = storeEvaluation.index + 2; //we don't want the operation to reapear just next to this one.
+					let max = storeEvaluation.operations.length-1; //we need an index
+					let place = this.randomWithRange(min, max);
+
+					let operationWithProblem = {
+						multiplier1 : storeEvaluation.currentOperation.multiplier1,
+						multiplier2 : storeEvaluation.currentOperation.multiplier2,
+						result : storeEvaluation.currentOperation.result,
+						time: 0,
+						errors: 0,
+						userChoices: [],
+						choices: this.generateChoices(storeEvaluation.currentOperation)
+					};
+					storeEvaluation.operations[place] = operationWithProblem;
+				}
+			},
+			randomWithRange(min, max) {
+				return Math.floor((Math.random() * (max - min + 1) + min));
 			}
 		}
 	};
