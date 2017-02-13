@@ -5,43 +5,47 @@ var evaluation =
 			return storeEvaluation
 		},
 		created: function(){
-			if (localStorageExist()) {
-				storeEvaluation.activeUser = getActiveUserName();
-				storeEvaluation.operations = [];
-				
-				let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
-
-				if (exercisesDone == 10)
-				{
-					storeEvaluation.trainingDone = true;
-					// Create 10 multiplications for Evaluation Mode
-					for (let i = 0; i < 10; i++) {
-						let operation = {
-							multiplier1 : 0,
-							multiplier2 : 0,
-							result : 0,
-							choices : [],
-							errors : 0,
-							userChoices : [],
-							time : 0
-						};
-
-						// Save operation
-						operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
-						operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
-						operation.result = operation.multiplier1 * operation.multiplier2;
-						operation.choices = this.generateChoices(operation);
-						storeEvaluation.operations.push(operation);
-					}
-
-					// Get the current operation
-					storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
-					//start and store the start in seconds
-					time.start = new Date().getTime() / 1000;
-				}
-			}
+			this.init();
 		},
 		methods: {
+			init : function () {
+				if (localStorageExist()) {
+					storeEvaluation.activeUser = getActiveUserName();
+					storeEvaluation.operations = [];
+					storeEvaluation.index = 0;
+
+					let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
+
+					if (exercisesDone == 10)
+					{
+						storeEvaluation.trainingDone = true;
+						// Create 10 multiplications for Evaluation Mode
+						for (let i = 0; i < 10; i++) {
+							let operation = {
+								multiplier1 : 0,
+								multiplier2 : 0,
+								result : 0,
+								choices : [],
+								errors : 0,
+								userChoices : [],
+								time : 0
+							};
+
+							// Save operation
+							operation.multiplier1 = Math.floor((Math.random() * 10) + 1);
+							operation.multiplier2 = Math.floor((Math.random() * 10) + 1);
+							operation.result = operation.multiplier1 * operation.multiplier2;
+							operation.choices = this.generateChoices(operation);
+							storeEvaluation.operations.push(operation);
+						}
+
+						// Get the current operation
+						storeEvaluation.currentOperation = storeEvaluation.operations[storeEvaluation.index];
+						//start and store the start in seconds
+						time.start = new Date().getTime() / 1000;
+					}
+				}
+			},
 			generateChoices: function(operation){
 
 				//compute and store operations value
