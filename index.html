@@ -2,12 +2,12 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
-	<title>Tables de multiplication</title>
+	<title>MultiTable</title>
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="css/app.css" />
-	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
 </head>
 <body>
@@ -19,7 +19,7 @@
 	<nav>
 		<div class="nav-wrapper">
 			<router-link to="/" class="brand-logo">
-				Tables de multiplication
+				MultiTable
 			</router-link>
 			<ul class="right hide-on-med-and-down">
 				<li>
@@ -63,18 +63,18 @@
 
 <!-- Template home page -->
 <script id="home" type="text/x-template">
-	<article>		
+	<article>
 		<!-- Change profile -->
 		<template v-if="activeUser != null && allUsers.length > 1">
 			<h2 class="header center">Selectionnes ton profil!</h2>
 			<p>Le profil en rouge est celui qui est actuellement selectionné.</p>
-			<span v-for="user in allUsers">
+			<div id="select-profil" v-for="user in allUsers">
 				<button v-if="user == activeUser" class="btn red">{{ user }}</button>
-				<button v-else class="btn" v-on:click="changeActiveUser(user)">{{ user }}</button>
-			</span>
+				<button v-else class="btn deep-purple lighten-2" v-on:click="changeActiveUser(user)">{{ user }}</button>
+			</div>
 		</template>
 		<h1 class="header center" v-if="activeUser != null">Choisis ton mode de jeu {{ activeUser }}</h1>
-		<h1 class="header center" v-else>Bienvenu dans MultiTable!</h1>
+		<h1 class="header center" v-else>Bienvenue dans MultiTable!</h1>
 
 		<!-- Choice between learning mode / evaluation mode -->
 		<div class="row" v-if="activeUser != null">
@@ -115,7 +115,7 @@
 			<h2 class="header center">Sauvegarder ma partie:</h2>
 			<p class="center">Ta progression est sauvegardée dans ton ordinateur mais si tu veux un fichier de sauvegarde pour jouer sur un autre ordinateur cliques ici: </p>
 			<p class="center"><a :href="saveUri" download="timesTableSavegame.save" class="btn"><i class="material-icons left">cloud_download</i>télécharger ma sauvegarde</a></p>
-			
+
 			<h2 class="header center">Supprimer toutes mes données:</h2>
 			<p class="center"><button v-on:click="wipeAllData()" class="btn">Supprimer toutes les données</button></p>
 		</template>
@@ -124,12 +124,29 @@
 		<template v-else>
 			<h2 class="header center">Créer ma famille</h2>
 			<p class="center">Si tu es nouveau ou que tu n'as pas de sauvegarde, tu dois d'abord créer ton compte (c'est très simple) et ça permettra aux autres personnes de ta famille de jouer également.</p>
-			<form v-on:submit.prevent="createFamily($event)">
-				Prénom: <input type="text" name="fname" id="fname"><br>
-				Nom: <input type="text" name="lname" id="lname"><br>
-				<input type="submit" value="Envoyer">
-			</form>
-
+			<div class="card-panel grey lighten-5" id="create-family">
+				<form v-on:submit.prevent="createFamily($event)">
+					<div class="row">
+						<div class="input-field col s8 offset-s2">
+							<input type="text" id="fname" name="_fname" value="" required="required">
+							<label for="fname">Prénom</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s8 offset-s2">
+							<input type="text" id="lname" name="_lname" value="" required="required">
+							<label for="lname">Nom</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12 ">
+							<button class="btn waves-effect waves-light col s6 offset-s3 deep-purple lighten-2" id="_submit" name="_submit" type="submit" value="Créer">Créer
+								<i class="material-icons right">send</i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
 			<h2 class="header center">Restaurer ma partie:</h2>
 			<p class="center">Nous n'avons pas de partie enregistré sur cet ordinateur!<br/> Si tu es nouveau c'est normal, tu pourras en télécharger une après avoir joué. Si tu as un fichier de sauvegarde, tu peux l'importer ici:</p>
 			<div class="file-field input-field">
@@ -221,7 +238,7 @@
 	</section>
 	<section v-else>
 		<h1 class="header center">Mode apprentissage</h1>
-		<article id="content-check-training">
+		<article class="content-check-training">
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
@@ -242,7 +259,7 @@
 		<!-- Check if the user had done the training mode -->
 		<div v-if="!trainingDone">
 			<h1 class="header center">Mode évaluation</h1>
-			<article id="content-check-training">
+			<article class="content-check-training">
 				<div class="card deep-purple lighten-2">
 					<div class="card-content" deep-purple lighten-4>
 						<p>Avant de pouvoir faire le mode évaluation, finis d'abord le mode apprentissage.</p>
@@ -307,7 +324,7 @@
 	</section>
 	<section v-else>
 		<h1 class="header center">Mode évaluation</h1>
-		<article id="content-check-training">
+		<article class="content-check-training">
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
@@ -343,7 +360,7 @@
 						</li>
 					</ul>
 					<div v-else class="card-content grey lighten-4">
-							<p>Aucune statistiques n'existe pour le moment. Il faut jouer avant de pouvoir afficher des statistiques!</p>
+						<p>Aucune statistiques n'existe pour le moment. Il faut jouer avant de pouvoir afficher des statistiques!</p>
 					</div>
 				</div>
 			</div>
@@ -414,7 +431,7 @@
 	</section>
 	<section v-else>
 		<h1 class="header center">Voir mes statistiques</h1>
-		<article id="content-check-training">
+		<article class="content-check-training">
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
@@ -433,26 +450,45 @@
 <script id="profilManagement" type="text/x-template">
 	<section v-if="activeUser != null">
 		<article>
-			<h1>Gestion des profils de la famille {{ family }}</h1>
-			<p v-if="message != null">{{ message }}</p>
-
-			<h2 class="header center">Profils existant</h2>
-			<ul>
-				<li v-for="user in allUsers">{{ user }}    -
-					<button v-on:click="deleteUser(user)" class="btn">Supprimer</button>
-				</li>
-			</ul>
-
-			<h2 class="header center">Ajouter un profil</h2>
-			<form v-on:submit.prevent="addActiveUser($event)">
-				Saisir un prénom: <input type="text" name="fname"><br>
-				<input type="submit" value="Envoyer">
-			</form>
+			<h1 class="center header">Gestion des profils de la famille {{ family }}</h1>
+			<div class="row">
+				<h2 class="subtitle">Profils existants</h2>
+				<ul class="collection col s3">
+					<li v-for="user in allUsers" class="collection-item">
+						<div>{{ user }}
+							<button v-on:click="deleteUser(user)" class="secondary-content btn-floating"><i class="material-icons">delete</i></button>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="card-panel grey lighten-5" id="add-family">
+				<form v-on:submit.prevent="addActiveUser($event)">
+					<div class="row">
+						<div class="input-field col s12 center">
+							<p class="center">Ajouter un profil</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s8 offset-s2">
+							<input type="text" id="fname2" name="_fname" value="" required="required">
+							<label for="fname">Prénom</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12 ">
+							<button class="btn waves-effect waves-light col s6 offset-s3 deep-purple lighten-2" id="_submit2" name="_submit" type="submit" value="Créer">Créer
+								<i class="material-icons right">send</i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<p v-if="message != null" class="text-red center">{{ message }}</p>
 		</article>
 	</section>
 	<section v-else>
 		<h1 class="header center">Gestion des profils</h1>
-		<article id="content-check-training">
+		<article class="content-check-training">
 			<div class="card deep-purple lighten-2">
 				<div class="card-content" deep-purple lighten-4>
 					<p>Vous n'avez aucun profil actif... veuillez allez sur la page d'accueil pour créer le premier. Vous pourrez ensuite en ajouter d'autres sur cette page</p>
@@ -464,11 +500,11 @@
 				</div>
 			</div>
 		</article>
-	</section>		
+	</section>
 </script>
 
 <!-- External libs -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
 <script src="js/lib/jquery/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 <script src="js/lib/vue-router/dist/vue-router.js"></script>

@@ -30,6 +30,11 @@ body, p, li{
 	background-color: white;
 	color : rgba(238,110,115,0.7);
 }
+h2.subtitle {
+	font-style: italic;
+	color: #ee6e73;
+	font-size: 26px;
+}
 .text-green {
 	color: #4CAF50;
 }
@@ -53,7 +58,37 @@ body, p, li{
 #main {
 	flex: 1 0 auto;
 }
-
+input:not([type]):focus:not([readonly]),
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=date]:focus:not([readonly]),
+input[type=datetime]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+	border-bottom: 1px solid #9575cd ;
+	box-shadow: 0 1px 0 0 #9575cd ;
+}
+input:not([type]):focus:not([readonly])+label,
+input[type=text]:focus:not([readonly])+label,
+input[type=password]:focus:not([readonly])+label,
+input[type=email]:focus:not([readonly])+label,
+input[type=url]:focus:not([readonly])+label,
+input[type=time]:focus:not([readonly])+label,
+input[type=date]:focus:not([readonly])+label,
+input[type=datetime]:focus:not([readonly])+label,
+input[type=datetime-local]:focus:not([readonly])+label,
+input[type=tel]:focus:not([readonly])+label,
+input[type=number]:focus:not([readonly])+label,
+input[type=search]:focus:not([readonly])+label,
+textarea.materialize-textarea:focus:not([readonly])+label {
+	color : #9575cd;
+}
 /* Header */
 
 .header {
@@ -88,22 +123,34 @@ nav .brand-logo {
 	margin: auto;
 	padding: 10px;
 }
-
-/* Apprentissage */
+#create-family, #add-family {
+	width: 50%;
+	margin: 20px 25%;
+}
+#create-family .btn, #add-family .btn {
+	color: white;
+}
+#select-profil {
+	margin: 20px 0;
+}
+#select-profil .btn {
+	color: white;
+}
+/* Learning */
 
 #content-learning .card > .card-content p,
 #content-stats .card > .card-content p,
-#content-check-training .card > .card-content p{
+.content-check-training .card > .card-content p{
 	color: white;
 }
 #content-learning .card .card-tabs .selected,
 #content-stats .card .card-tabs .selected,
-#content-check-training .card .card-tabs .selected{
+.content-check-training .card .card-tabs .selected{
 	color: #9575cd;
 	opacity: 1;
 }
 
-/* Opérations */
+/* Operations */
 
 .content-operation .text-tour {
 	font-style: italic;
@@ -116,7 +163,8 @@ nav .brand-logo {
 	color: white;
 }
 
-/* Tableau des scores */
+/* Score table */
+
 .table-score {
 	margin-bottom: 40px;
 }
@@ -131,6 +179,15 @@ nav .brand-logo {
 }
 .table-score .no-mistakes {
 	color: #4caf50;
+}
+
+/* Profils */
+.collection .collection-item {
+	padding: 25px 20px;
+}
+.collection .btn-floating {
+	top: -10px;
+	background-color: #9575cd;
 }
 
 /* Footer */

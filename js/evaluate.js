@@ -11,7 +11,7 @@ var evaluation =
 				
 				let exercisesDone = getUserActiveLocalStorage().finishedTables.length;
 
-				if (exercisesDone == 9)
+				if (exercisesDone == 10)
 				{
 					storeEvaluation.trainingDone = true;
 					// Create 10 multiplications for Evaluation Mode
