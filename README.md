@@ -26,6 +26,8 @@ Then you can go to "Training mode" and train every multiplication tables from on
 Aften trying every table, "Evaluation mode" if unlocked and provide ten operation mixed in the ten multiplication tables.
 When you are done, you can check your statistics in the "Statistics" page.
 
+![](images/screenshot2.png)
+
 ## Built with
 
 * [`Vue.js`](https://vuejs.org/)
