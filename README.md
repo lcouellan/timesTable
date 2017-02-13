@@ -8,7 +8,7 @@ You can visualize the statistics for each tables and evaluations in a separate p
 
 It's a group project involving Lénaïc Couellan and Pierre Labadille, students in M2-DNR2i from the University of Caen.
 
-![](media/screenshot.png)
+![](images/screenshot.png)
 
 ## Installing
 
